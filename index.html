@@ -5,24 +5,39 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Wessel Smit · Cybersecurity & Cloud</title>
   <meta name="description" content="Portfolio van Wessel Smit — HBO-ICT student Cybersecurity & Cloud aan Hogeschool Utrecht.">
-  <meta name="theme-color" content="#0a0f1e">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='16' fill='%230a0f1e'/><text x='50' y='66' font-size='52' text-anchor='middle' fill='%2300ff88' font-family='monospace' font-weight='bold'>&gt;_</text></svg>">
+  <meta name="theme-color" content="#121110" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#f3efe6" media="(prefers-color-scheme: light)">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23121110'/><text x='50' y='70' font-size='60' text-anchor='middle' fill='%23ffb000' font-family='monospace' font-weight='bold'>W</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #0a0f1e;
-      --bg-2: #0e1528;
-      --panel: rgba(16, 24, 44, 0.72);
-      --border: rgba(0, 212, 255, 0.16);
-      --text: #d6e2f5;
-      --muted: #7a8aa8;
-      --green: #00ff88;
-      --cyan: #00d4ff;
-      --red: #ff3860;
-      --radius: 12px;
-      --font: "JetBrains Mono", "Fira Code", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      --bg: #121110;
+      --text: #e9e4d8;
+      --muted: #8c867a;
+      --rule: #2e2b27;
+      --accent: #ffb000;
+      --on-accent: #121110;
+      --ok: #9ccf6a;
+      --warn: #ffb000;
+      --bad: #ff6a4d;
+      --font: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      --indent: 7ch;
+    }
+
+    @media (prefers-color-scheme: light) {
+      :root {
+        --bg: #f3efe6;
+        --text: #1b1a17;
+        --muted: #6f695e;
+        --rule: #d9d2c3;
+        --accent: #b35900;
+        --on-accent: #f3efe6;
+        --ok: #3f7d1f;
+        --warn: #b35900;
+        --bad: #c2321b;
+      }
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -31,834 +46,313 @@
 
     body {
       font-family: var(--font);
+      font-size: 15px;
       background: var(--bg);
       color: var(--text);
-      line-height: 1.6;
+      line-height: 1.65;
       min-height: 100vh;
-      overflow-x: hidden;
+      padding-bottom: 2.5rem; /* ruimte voor de less-balk */
       -webkit-font-smoothing: antialiased;
     }
 
     a { color: inherit; }
 
-    ::selection { background: var(--green); color: var(--bg); }
+    ::selection { background: var(--accent); color: var(--on-accent); }
 
-    /* ---------- Achtergrond-lagen ---------- */
-    #bg-canvas {
-      position: fixed;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 0;
-      pointer-events: none;
-    }
+    :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
-    .grid-overlay {
-      position: fixed;
-      inset: 0;
-      z-index: 0;
-      pointer-events: none;
-      background-image:
-        linear-gradient(rgba(0, 212, 255, 0.045) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0, 212, 255, 0.045) 1px, transparent 1px);
-      background-size: 48px 48px;
-      mask-image: radial-gradient(ellipse at 50% 30%, #000 20%, transparent 75%);
-      -webkit-mask-image: radial-gradient(ellipse at 50% 30%, #000 20%, transparent 75%);
-      animation: grid-drift 30s linear infinite;
-    }
-
-    @keyframes grid-drift {
-      to { background-position: 0 48px, 48px 0; }
-    }
-
-    .scanlines {
-      position: fixed;
-      inset: 0;
-      z-index: 50;
-      pointer-events: none;
-      background: repeating-linear-gradient(
-        to bottom,
-        rgba(255, 255, 255, 0.022) 0px,
-        rgba(255, 255, 255, 0.022) 1px,
-        transparent 1px,
-        transparent 3px
-      );
-    }
-
-    .scanlines::after {
-      content: "";
-      position: absolute;
-      left: 0;
-      right: 0;
-      height: 120px;
-      background: linear-gradient(to bottom, transparent, rgba(0, 255, 136, 0.04), transparent);
-      animation: scan 7s linear infinite;
-    }
-
-    @keyframes scan {
-      from { top: -120px; }
-      to { top: 100%; }
-    }
-
-    .cursor-glow {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 420px;
-      height: 420px;
-      border-radius: 50%;
-      pointer-events: none;
-      z-index: 1;
-      background: radial-gradient(circle, rgba(0, 255, 136, 0.13) 0%, rgba(0, 212, 255, 0.06) 35%, transparent 70%);
-      transform: translate3d(-50%, -50%, 0);
-      opacity: 0;
-      transition: opacity 0.4s ease;
-      will-change: transform;
-    }
-
-    .cursor-glow.active { opacity: 1; }
-
-    /* ---------- Navigatie ---------- */
-    .nav {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 40;
-      background: rgba(10, 15, 30, 0.78);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      border-bottom: 1px solid var(--border);
-    }
-
-    .nav-inner {
-      max-width: 1120px;
+    .page {
+      max-width: 880px;
       margin: 0 auto;
-      padding: 0.8rem 1rem;
+      padding: 0 1rem;
+    }
+
+    b, strong { font-weight: 700; }
+    .u { text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--muted); }
+    .muted { color: var(--muted); }
+    .acc { color: var(--accent); }
+
+    /* ---------- Man-page kop ---------- */
+    .manhead {
       display: flex;
-      align-items: center;
       justify-content: space-between;
       gap: 1rem;
+      padding: 1.25rem 0 0.9rem;
+      border-bottom: 1px solid var(--rule);
+      font-size: 0.8rem;
     }
 
-    .nav-prompt {
-      font-size: 0.85rem;
+    .manhead .mid { color: var(--muted); }
+
+    .manhead nav { display: flex; gap: 1.25rem; }
+
+    .manhead nav a {
       text-decoration: none;
+      color: var(--muted);
+    }
+
+    .manhead nav a:hover { color: var(--accent); }
+
+    @media (max-width: 620px) { .manhead .mid { display: none; } }
+
+    /* ---------- Hero ---------- */
+    .hero { padding: 4.5rem 0 3rem; }
+
+    .hero h1 {
+      font-size: clamp(3rem, 19vw, 7.5rem);
+      font-weight: 700;
+      line-height: 0.92;
+      letter-spacing: -0.055em;
+      margin-left: -0.05em;
+    }
+
+    .hero h1 .last { color: var(--accent); }
+
+    .hero h1 .cursor {
+      display: inline-block;
+      width: 0.5em;
+      height: 0.8em;
+      margin-left: 0.08em;
+      background: var(--text);
+      vertical-align: -0.02em;
+      animation: blink 1.1s steps(1) infinite;
+    }
+
+    @keyframes blink { 50% { opacity: 0; } }
+
+    .hero .role {
+      margin-top: 1.75rem;
+      max-width: 52ch;
+      font-size: 1.05rem;
+    }
+
+    .hero .role em { font-style: italic; color: var(--muted); }
+
+    /* ---------- Secties ---------- */
+    .sect { padding: 2.25rem 0; }
+
+    .sect > h2 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+    }
+
+    .sect > h2 .n { color: var(--muted); font-weight: 400; margin-right: 1ch; }
+
+    .body {
+      margin-top: 0.6rem;
+      padding-left: var(--indent);
+    }
+
+    .body p + p { margin-top: 0.9rem; }
+    .body p { max-width: 68ch; }
+
+    @media (max-width: 620px) { :root { --indent: 2ch; } }
+
+    .synopsis { white-space: pre-wrap; }
+    .synopsis .flag { color: var(--accent); }
+
+    /* ---------- Modules als optielijst ---------- */
+    .modules { list-style: none; border-top: 1px solid var(--rule); }
+
+    .modules li { border-bottom: 1px solid var(--rule); }
+
+    .mod {
+      display: grid;
+      grid-template-columns: 3ch 13ch 1fr auto;
+      gap: 0 1.5ch;
+      align-items: baseline;
+      padding: 0.9rem 0.6rem;
+      text-decoration: none;
+      transition: background 0.12s, color 0.12s;
+    }
+
+    .mod .idx { color: var(--muted); }
+    .mod .name { font-weight: 700; }
+    .mod .desc { color: var(--muted); }
+    .mod .go { white-space: nowrap; font-size: 0.8rem; }
+
+    a.mod:hover, a.mod:focus-visible {
+      background: var(--accent);
+      color: var(--on-accent);
+      outline: none;
+    }
+
+    a.mod:hover .idx, a.mod:hover .desc,
+    a.mod:focus-visible .idx, a.mod:focus-visible .desc { color: var(--on-accent); }
+
+    .mod.off { opacity: 0.55; }
+    .mod.off .name { text-decoration: line-through; text-decoration-thickness: 1px; }
+
+    @media (max-width: 620px) {
+      .mod { grid-template-columns: 3ch 1fr; row-gap: 0.2rem; }
+      .mod .desc, .mod .go { grid-column: 2; }
+    }
+
+    /* ---------- Zie ook ---------- */
+    .xref { display: flex; flex-wrap: wrap; gap: 0.35rem 0; }
+    .xref span:not(:last-child)::after { content: ","; margin-right: 1ch; color: var(--muted); }
+    .xref a { text-decoration: none; border-bottom: 1px solid var(--muted); }
+    .xref a:hover { color: var(--accent); border-color: var(--accent); }
+
+    /* ---------- Man-page voet ---------- */
+    .manfoot {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.75rem 1rem;
+      margin-top: 2rem;
+      padding: 0.9rem 0 1.5rem;
+      border-top: 1px solid var(--rule);
+      font-size: 0.8rem;
+    }
+
+    .status-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6ch;
+      text-decoration: none;
+      color: var(--muted);
+      --c: var(--muted);
+    }
+
+    .status-link.up { --c: var(--ok); }
+    .status-link.degraded { --c: var(--warn); }
+    .status-link.down { --c: var(--bad); }
+    .status-link:hover { color: var(--text); }
+
+    .status-dot { width: 0.6em; height: 0.6em; background: var(--c); }
+
+    /* ---------- less-statusbalk ---------- */
+    .less {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 10;
+      background: var(--text);
+      color: var(--bg);
+      font-size: 0.8rem;
+      padding: 0.35rem 1rem;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
 
-    .nav-prompt .user { color: var(--green); }
-    .nav-prompt .path { color: var(--cyan); }
-    .nav-prompt .caret {
-      display: inline-block;
-      width: 0.55em;
-      height: 1em;
-      background: var(--green);
-      vertical-align: -0.12em;
-      margin-left: 0.25em;
-      animation: blink 1s steps(1) infinite;
-    }
+    .less kbd { font-family: inherit; font-weight: 700; }
 
-    .nav-links {
-      display: flex;
-      gap: 0.25rem;
-      list-style: none;
-    }
-
-    .nav-links a {
-      display: block;
-      font-size: 0.8rem;
-      color: var(--muted);
-      text-decoration: none;
-      padding: 0.35rem 0.6rem;
-      border-radius: 6px;
-      transition: color 0.2s, background 0.2s;
-    }
-
-    .nav-links a::before { content: "./"; color: var(--green); opacity: 0.6; }
-
-    .nav-links a:hover,
-    .nav-links a:focus-visible {
-      color: var(--green);
-      background: rgba(0, 255, 136, 0.08);
-      outline: none;
-    }
-
-    @media (max-width: 520px) {
-      .nav-prompt .host { display: none; }
-      .nav-links a { padding: 0.35rem 0.4rem; font-size: 0.75rem; }
-    }
-
-    @keyframes blink { 50% { opacity: 0; } }
-
-    /* ---------- Layout ---------- */
-    main, footer { position: relative; z-index: 2; }
-
-    .container {
-      max-width: 1120px;
-      margin: 0 auto;
-      padding: 0 1rem;
-    }
-
-    section { padding: 5rem 0; }
-
-    /* ---------- Hero ---------- */
-    .hero {
-      min-height: 100vh;
-      min-height: 100svh;
-      display: flex;
-      align-items: center;
-      padding-top: 5rem;
-    }
-
-    .hero-label {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-size: 0.75rem;
-      color: var(--green);
-      border: 1px solid rgba(0, 255, 136, 0.3);
-      background: rgba(0, 255, 136, 0.06);
-      padding: 0.3rem 0.75rem;
-      border-radius: 999px;
-      margin-bottom: 1.5rem;
-    }
-
-    .hero-label .dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: var(--green);
-      box-shadow: 0 0 10px var(--green);
-      animation: pulse 2s ease-in-out infinite;
-    }
-
-    @keyframes pulse { 50% { opacity: 0.35; } }
-
-    .hero-name {
-      position: relative;
-      font-size: clamp(2.6rem, 11vw, 6.5rem);
-      font-weight: 800;
-      line-height: 1.05;
-      letter-spacing: -0.03em;
-      color: #fff;
-      text-shadow: 0 0 24px rgba(0, 255, 136, 0.35);
-      min-height: 1.05em;
-    }
-
-    .hero-name .typed-cursor {
-      display: inline-block;
-      width: 0.08em;
-      height: 0.85em;
-      margin-left: 0.06em;
-      background: var(--green);
-      vertical-align: -0.05em;
-      box-shadow: 0 0 12px var(--green);
-      animation: blink 1s steps(1) infinite;
-    }
-
-    /* Glitch-effect: twee gekleurde kopieën die af en toe verschuiven */
-    .glitch { position: relative; display: inline-block; }
-
-    .glitch::before,
-    .glitch::after {
-      content: attr(data-text);
-      position: absolute;
-      inset: 0;
-      opacity: 0;
-      pointer-events: none;
-    }
-
-    .glitch.glitching::before {
-      color: var(--cyan);
-      opacity: 0.85;
-      animation: glitch-a 3.5s infinite steps(1);
-    }
-
-    .glitch.glitching::after {
-      color: var(--red);
-      opacity: 0.85;
-      animation: glitch-b 3.5s infinite steps(1);
-    }
-
-    @keyframes glitch-a {
-      0%, 88%, 100% { clip-path: inset(0 0 100% 0); transform: none; }
-      89% { clip-path: inset(10% 0 60% 0); transform: translate(-4px, -2px); }
-      91% { clip-path: inset(55% 0 20% 0); transform: translate(4px, 1px); }
-      93% { clip-path: inset(30% 0 45% 0); transform: translate(-3px, 2px); }
-      95% { clip-path: inset(80% 0 5% 0); transform: translate(2px, -1px); }
-    }
-
-    @keyframes glitch-b {
-      0%, 88%, 100% { clip-path: inset(0 0 100% 0); transform: none; }
-      89% { clip-path: inset(65% 0 10% 0); transform: translate(4px, 2px); }
-      91% { clip-path: inset(5% 0 75% 0); transform: translate(-4px, -1px); }
-      93% { clip-path: inset(40% 0 35% 0); transform: translate(3px, -2px); }
-      95% { clip-path: inset(15% 0 70% 0); transform: translate(-2px, 1px); }
-    }
-
-    .hero-sub {
-      margin-top: 1.25rem;
-      font-size: clamp(0.85rem, 2.6vw, 1.15rem);
-      color: var(--cyan);
-      letter-spacing: 0.02em;
-    }
-
-    .hero-sub .sep { color: var(--muted); margin: 0 0.35em; }
-
-    .terminal {
-      margin-top: 2rem;
-      max-width: 560px;
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      overflow: hidden;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
-    }
-
-    .terminal-bar {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      padding: 0.55rem 0.8rem;
-      background: rgba(255, 255, 255, 0.03);
-      border-bottom: 1px solid var(--border);
-    }
-
-    .terminal-bar span {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: #3a4560;
-    }
-
-    .terminal-bar span:nth-child(1) { background: #ff5f57; }
-    .terminal-bar span:nth-child(2) { background: #febc2e; }
-    .terminal-bar span:nth-child(3) { background: #28c840; }
-
-    .terminal-bar em {
-      margin-left: auto;
-      font-style: normal;
-      font-size: 0.7rem;
-      color: var(--muted);
-    }
-
-    .terminal-body {
-      padding: 1rem 1.1rem;
-      font-size: clamp(0.8rem, 2.4vw, 0.95rem);
-    }
-
-    .terminal-body p + p { margin-top: 0.4rem; }
-    .terminal-body .prompt { color: var(--green); }
-    .terminal-body .out { color: var(--text); }
-    .terminal-body .muted { color: var(--muted); }
-
-    #tagline { color: var(--cyan); }
-
-    #tagline::after {
-      content: "";
-      display: inline-block;
-      width: 0.55em;
-      height: 1.05em;
-      background: var(--cyan);
-      margin-left: 2px;
-      vertical-align: -0.18em;
-      animation: blink 1s steps(1) infinite;
-    }
-
-    .hero-cta {
-      margin-top: 2.25rem;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.75rem;
-    }
-
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-family: inherit;
-      font-size: 0.85rem;
-      font-weight: 500;
-      text-decoration: none;
-      padding: 0.75rem 1.2rem;
-      border-radius: 8px;
-      border: 1px solid var(--green);
-      color: var(--bg);
-      background: var(--green);
-      transition: box-shadow 0.25s, transform 0.25s, background 0.25s, color 0.25s;
-    }
-
-    .btn:hover, .btn:focus-visible {
-      box-shadow: 0 0 24px rgba(0, 255, 136, 0.55);
-      transform: translateY(-2px);
-      outline: none;
-    }
-
-    .btn.ghost {
-      background: transparent;
-      color: var(--green);
-    }
-
-    .btn.ghost:hover, .btn.ghost:focus-visible { background: rgba(0, 255, 136, 0.08); }
-
-    .scroll-hint {
-      position: absolute;
-      bottom: 1.5rem;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 0.7rem;
-      color: var(--muted);
-      text-decoration: none;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.3rem;
-      animation: bob 2.2s ease-in-out infinite;
-    }
-
-    @keyframes bob { 50% { transform: translate(-50%, 6px); } }
-
-    /* ---------- Sectie-koppen ---------- */
-    .section-head { margin-bottom: 2.5rem; }
-
-    .section-head .cmd {
-      font-size: 0.85rem;
-      color: var(--green);
-    }
-
-    .section-head .cmd::before { content: "$ "; color: var(--muted); }
-
-    .section-head h2 {
-      font-size: clamp(1.6rem, 5vw, 2.4rem);
-      font-weight: 700;
-      color: #fff;
-      margin-top: 0.25rem;
-    }
-
-    .section-head p {
-      color: var(--muted);
-      margin-top: 0.5rem;
-      max-width: 60ch;
-      font-size: 0.9rem;
-    }
-
-    /* ---------- Modules ---------- */
-    .modules-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 1.25rem;
-    }
-
-    @media (min-width: 640px) { .modules-grid { grid-template-columns: repeat(2, 1fr); } }
-    @media (min-width: 1000px) { .modules-grid { grid-template-columns: repeat(4, 1fr); } }
-
-    .card {
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      gap: 0.75rem;
-      padding: 1.5rem;
-      min-height: 230px;
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      text-decoration: none;
-      color: var(--text);
-      overflow: hidden;
-      transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s;
-      backdrop-filter: blur(6px);
-      -webkit-backdrop-filter: blur(6px);
-    }
-
-    /* Spotlight binnen de kaart op muispositie */
-    .card::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(260px circle at var(--mx, 50%) var(--my, 50%), rgba(0, 255, 136, 0.12), transparent 60%);
-      opacity: 0;
-      transition: opacity 0.3s;
-      pointer-events: none;
-    }
-
-    .card.active:hover,
-    .card.active:focus-visible {
-      border-color: var(--green);
-      box-shadow: 0 0 0 1px var(--green), 0 0 28px rgba(0, 255, 136, 0.35), inset 0 0 22px rgba(0, 255, 136, 0.08);
-      transform: translateY(-4px);
-      outline: none;
-    }
-
-    .card.active:hover::before,
-    .card.active:focus-visible::before { opacity: 1; }
-
-    .card-icon {
-      font-size: 2rem;
-      width: 56px;
-      height: 56px;
-      display: grid;
-      place-items: center;
-      border-radius: 10px;
-      background: rgba(0, 255, 136, 0.08);
-      border: 1px solid rgba(0, 255, 136, 0.25);
-    }
-
-    .card h3 {
-      font-size: 1.1rem;
-      color: #fff;
-    }
-
-    .card p {
-      font-size: 0.82rem;
-      color: var(--muted);
-      flex: 1;
-    }
-
-    .card-foot {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      font-size: 0.75rem;
-    }
-
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.35rem;
-      padding: 0.2rem 0.6rem;
-      border-radius: 999px;
-      font-size: 0.7rem;
-      border: 1px solid currentColor;
-    }
-
-    .badge.live { color: var(--green); background: rgba(0, 255, 136, 0.06); }
-    .badge.lock { color: var(--muted); }
-
-    .card .arrow {
-      color: var(--green);
-      transition: transform 0.3s;
-    }
-
-    .card.active:hover .arrow { transform: translateX(4px); }
-
-    .card.disabled {
-      cursor: not-allowed;
-      filter: grayscale(1);
-      opacity: 0.5;
-      border-style: dashed;
-    }
-
-    .card.disabled .card-icon {
-      background: rgba(255, 255, 255, 0.03);
-      border-color: rgba(255, 255, 255, 0.1);
-    }
-
-    /* ---------- Over mij ---------- */
-    .about-grid {
-      display: grid;
-      gap: 1.25rem;
-      grid-template-columns: 1fr;
-    }
-
-    @media (min-width: 800px) { .about-grid { grid-template-columns: 3fr 2fr; } }
-
-    .about-text {
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 1.5rem;
-      font-size: 0.9rem;
-    }
-
-    .about-text p + p { margin-top: 0.9rem; }
-    .about-text .hl { color: var(--green); }
-
-    .stack {
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 1.5rem;
-    }
-
-    .stack h3 {
-      font-size: 0.8rem;
-      font-weight: 500;
-      color: var(--muted);
-      margin-bottom: 1rem;
-    }
-
-    .stack h3::before { content: "// "; color: var(--green); }
-
-    .tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
-
-    .tags span {
-      font-size: 0.75rem;
-      padding: 0.3rem 0.65rem;
-      border-radius: 6px;
-      color: var(--cyan);
-      background: rgba(0, 212, 255, 0.07);
-      border: 1px solid rgba(0, 212, 255, 0.22);
-      transition: box-shadow 0.2s, color 0.2s;
-    }
-
-    .tags span:hover { color: #fff; box-shadow: 0 0 14px rgba(0, 212, 255, 0.35); }
-
-    /* ---------- Footer ---------- */
-    footer {
-      border-top: 1px solid var(--border);
-      background: rgba(10, 15, 30, 0.85);
-      padding: 2rem 0;
-    }
-
-    .footer-inner {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 1rem;
-      text-align: center;
-      font-size: 0.8rem;
-      color: var(--muted);
-    }
-
-    @media (min-width: 640px) {
-      .footer-inner { flex-direction: row; justify-content: space-between; text-align: left; }
-    }
-
-    .footer-inner .heart { color: var(--green); }
-
-    .status-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.35rem 0.8rem;
-      border-radius: 999px;
-      border: 1px solid var(--border);
-      color: var(--muted);
-      text-decoration: none;
-      transition: color 0.2s, border-color 0.2s, box-shadow 0.2s;
-      --c: var(--muted);
-    }
-
-    .status-link.up { --c: var(--green); }
-    .status-link.degraded { --c: #ffb020; }
-    .status-link.down { --c: var(--red); }
-
-    .status-link:hover, .status-link:focus-visible {
-      color: var(--text);
-      border-color: var(--c);
-      box-shadow: 0 0 14px color-mix(in srgb, var(--c) 35%, transparent);
-      outline: none;
-    }
-
-    .status-dot {
-      width: 0.55rem;
-      height: 0.55rem;
-      border-radius: 50%;
-      background: var(--c);
-      box-shadow: 0 0 8px var(--c);
-    }
-
-    .status-link.up .status-dot { animation: status-pulse 2s ease-in-out infinite; }
-
-    @keyframes status-pulse { 50% { box-shadow: 0 0 2px var(--c); } }
-
-    .socials { display: flex; gap: 0.75rem; }
-
-    .socials a {
-      width: 42px;
-      height: 42px;
-      display: grid;
-      place-items: center;
-      border-radius: 10px;
-      border: 1px solid var(--border);
-      color: var(--muted);
-      transition: color 0.2s, border-color 0.2s, box-shadow 0.2s;
-    }
-
-    .socials a:hover, .socials a:focus-visible {
-      color: var(--green);
-      border-color: var(--green);
-      box-shadow: 0 0 18px rgba(0, 255, 136, 0.35);
-      outline: none;
-    }
-
-    .socials svg { width: 20px; height: 20px; fill: currentColor; }
-
-    /* ---------- Scroll-reveal ---------- */
-    .reveal {
-      opacity: 0;
-      transform: translateY(28px);
-      transition: opacity 0.8s ease, transform 0.8s ease;
-      transition-delay: var(--d, 0s);
-    }
-
-    .reveal.visible { opacity: 1; transform: none; }
-
-    .sr-only {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      overflow: hidden;
-      clip: rect(0 0 0 0);
-      white-space: nowrap;
-    }
+    @media (max-width: 620px) { .less .keys { display: none; } }
 
     @media (prefers-reduced-motion: reduce) {
       html { scroll-behavior: auto; }
-      *, *::before, *::after {
-        animation-duration: 0.001ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.001ms !important;
-      }
-      .reveal { opacity: 1; transform: none; }
+      .hero h1 .cursor { animation: none; }
     }
   </style>
 </head>
 <body>
-  <canvas id="bg-canvas" aria-hidden="true"></canvas>
-  <div class="grid-overlay" aria-hidden="true"></div>
-  <div class="scanlines" aria-hidden="true"></div>
-  <div class="cursor-glow" aria-hidden="true"></div>
+  <div class="page" id="top">
+    <header class="manhead">
+      <span>WESSEL(1)</span>
+      <span class="mid">Hogeschool Utrecht · HBO-ICT</span>
+      <nav aria-label="Hoofdnavigatie">
+        <a href="#modules">modules</a>
+        <a href="#about">about</a>
+        <a href="#contact">contact</a>
+      </nav>
+    </header>
 
-  <header class="nav">
-    <nav class="nav-inner" aria-label="Hoofdnavigatie">
-      <a href="#top" class="nav-prompt" aria-label="Naar boven">
-        <span class="user">wessel</span><span class="host">@smit</span>:<span class="path">~</span>$<span class="caret"></span>
-      </a>
-      <ul class="nav-links">
-        <li><a href="#modules">modules</a></li>
-        <li><a href="#about">about</a></li>
-        <li><a href="#contact">contact</a></li>
-      </ul>
-    </nav>
-  </header>
+    <main>
+      <section class="hero">
+        <h1>Wessel<br><span class="last">Smit</span><span class="cursor" aria-hidden="true"></span></h1>
+        <p class="role">Student Cybersecurity &amp; Cloud. Ik bouw kleine tools, breek dingen om te snappen hoe ze werken, en zet ze daarna weer dicht. <em>Dit is mijn handleiding.</em></p>
+      </section>
 
-  <main id="top">
-    <!-- Hero -->
-    <section class="hero">
-      <div class="container">
-        <div class="hero-label reveal"><span class="dot"></span> status: online</div>
-
-        <h1 class="hero-name">
-          <span class="sr-only">Wessel Smit</span>
-          <span class="glitch" id="hero-name" data-text="Wessel Smit" aria-hidden="true"></span><span class="typed-cursor" aria-hidden="true"></span>
-        </h1>
-
-        <p class="hero-sub reveal" style="--d: 0.15s">
-          HBO-ICT<span class="sep">·</span>Cybersecurity &amp; Cloud<span class="sep">·</span>Hogeschool Utrecht
-        </p>
-
-        <div class="terminal reveal" style="--d: 0.4s">
-          <div class="terminal-bar"><span></span><span></span><span></span><em>~/whoami</em></div>
-          <div class="terminal-body">
-            <p><span class="prompt">&gt;</span> <span class="out">student | developer | builder</span></p>
-            <p><span class="prompt">&gt;</span> <span id="tagline" aria-live="polite"></span></p>
-          </div>
+      <section class="sect">
+        <h2><span class="n">1</span>SYNOPSIS</h2>
+        <div class="body">
+          <p class="synopsis"><b>wessel</b> [<span class="flag">--learn</span>] [<span class="flag">--build</span>] [<span class="flag">--break</span>] <span class="u">systeem</span></p>
         </div>
+      </section>
 
-        <div class="hero-cta reveal" style="--d: 0.45s">
-          <a href="#modules" class="btn">&gt; bekijk modules</a>
-          <a href="#about" class="btn ghost">cat about.txt</a>
+      <section class="sect" id="modules">
+        <h2><span class="n">2</span>MODULES</h2>
+        <div class="body">
+          <p class="muted" style="margin-bottom: 1.1rem">Projecten, tools en leermateriaal. Er komt steeds meer bij.</p>
+          <ul class="modules">
+            <li>
+              <a class="mod" href="https://school.wesselsmit.com/">
+                <span class="idx">01</span><span class="name">school</span>
+                <span class="desc">Oefenmodules en quizzen voor HBO-ICT: theorie per sprint en meer.</span>
+                <span class="go">school.wesselsmit.com →</span>
+              </a>
+            </li>
+            <li>
+              <a class="mod" href="https://files.wesselsmit.com/">
+                <span class="idx">02</span><span class="name">filedrop</span>
+                <span class="desc">Bestanden direct en versleuteld van apparaat naar apparaat, zonder dat er iets op een server blijft staan.</span>
+                <span class="go">files.wesselsmit.com →</span>
+              </a>
+            </li>
+            <li>
+              <a class="mod" href="https://tools.wesselsmit.com/">
+                <span class="idx">03</span><span class="name">tools</span>
+                <span class="desc">JWT-decoder, encoder, hashes, subnetcalculator en meer. Draait volledig in je browser.</span>
+                <span class="go">tools.wesselsmit.com →</span>
+              </a>
+            </li>
+            <li>
+              <div class="mod off" aria-disabled="true">
+                <span class="idx">04</span><span class="name">ctf-writeups</span>
+                <span class="desc">Uitwerkingen van Capture The Flag challenges: web, crypto, forensics.</span>
+                <span class="go">binnenkort</span>
+              </div>
+            </li>
+          </ul>
         </div>
-      </div>
-      <a href="#modules" class="scroll-hint" aria-label="Scroll naar modules">scroll<span>↓</span></a>
-    </section>
+      </section>
 
-    <!-- Modules -->
-    <section id="modules">
-      <div class="container">
-        <div class="section-head reveal">
-          <div class="cmd">ls ./modules</div>
-          <h2>Modules</h2>
-          <p>Projecten, tools en leermateriaal. Er komt steeds meer bij, dus kom gerust later nog eens kijken.</p>
+      <section class="sect" id="about">
+        <h2><span class="n">3</span>DESCRIPTION</h2>
+        <div class="body">
+          <p><b>Wessel Smit</b> is HBO-ICT-student aan de Hogeschool Utrecht, richting <span class="acc">Cybersecurity &amp; Cloud</span>.</p>
+          <p>Vindt het leuk om te snappen hoe systemen werken, en hoe je ze kunt breken en weer veilig kunt maken. Op deze site verzamelt hij wat hij bouwt en leert.</p>
         </div>
+      </section>
 
-        <div class="modules-grid">
-          <a href="https://school.wesselsmit.com/" class="card active reveal">
-            <div class="card-icon" aria-hidden="true">📚</div>
-            <h3>School</h3>
-            <p>Oefenmodules en quizzen voor HBO-ICT: theorie per sprint en meer.</p>
-            <div class="card-foot">
-              <span class="badge live">● live</span>
-              <span class="arrow" aria-hidden="true">→</span>
-            </div>
-          </a>
-
-          <a href="https://files.wesselsmit.com/" class="card active reveal" style="--d: 0.1s">
-            <div class="card-icon" aria-hidden="true">📡</div>
-            <h3>Filedrop</h3>
-            <p>Stuur bestanden direct en versleuteld van apparaat naar apparaat, zonder dat er iets op een server blijft staan.</p>
-            <div class="card-foot">
-              <span class="badge live">● live</span>
-              <span class="arrow" aria-hidden="true">→</span>
-            </div>
-          </a>
-
-          <a href="https://tools.wesselsmit.com/" class="card active reveal" style="--d: 0.2s">
-            <div class="card-icon" aria-hidden="true">🧰</div>
-            <h3>Tools</h3>
-            <p>JWT-decoder, encoder, hashes, subnetcalculator en meer: security-tools die volledig in je browser draaien.</p>
-            <div class="card-foot">
-              <span class="badge live">● live</span>
-              <span class="arrow" aria-hidden="true">→</span>
-            </div>
-          </a>
-
-          <div class="card disabled reveal" style="--d: 0.3s" aria-disabled="true">
-            <div class="card-icon" aria-hidden="true">🚩</div>
-            <h3>CTF Write-ups</h3>
-            <p>Uitwerkingen van Capture The Flag challenges: web, crypto, forensics en meer.</p>
-            <div class="card-foot"><span class="badge lock">🔒 Coming soon</span></div>
-          </div>
+      <section class="sect">
+        <h2><span class="n">4</span>ENVIRONMENT</h2>
+        <div class="body">
+          <p class="xref">
+            <span>linux(1)</span><span>networking(7)</span><span>cloud(7)</span><span>docker(1)</span><span>python(1)</span><span>bash(1)</span><span>git(1)</span><span>websec(7)</span><span>ctf(6)</span><span>html/css/js(5)</span>
+          </p>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <!-- Over mij -->
-    <section id="about">
-      <div class="container">
-        <div class="section-head reveal">
-          <div class="cmd">cat about.txt</div>
-          <h2>Over mij</h2>
+      <section class="sect" id="contact">
+        <h2><span class="n">5</span>SEE ALSO</h2>
+        <div class="body">
+          <p class="xref">
+            <span><a href="https://github.com/WesselSmittt" target="_blank" rel="noopener noreferrer">github(1)</a></span>
+            <span><a href="https://www.linkedin.com/in/wessel-smit-837397141/" target="_blank" rel="noopener noreferrer">linkedin(1)</a></span>
+            <span><a href="https://status.wesselsmit.com/">status(8)</a></span>
+          </p>
         </div>
+      </section>
+    </main>
 
-        <div class="about-grid">
-          <div class="about-text reveal">
-            <p>Hoi! Ik ben <span class="hl">Wessel Smit</span>, HBO-ICT-student aan de Hogeschool Utrecht met als richting <span class="hl">Cybersecurity &amp; Cloud</span>.</p>
-            <p>Ik vind het leuk om te snappen hoe systemen werken, en hoe je ze kunt breken en weer veilig kunt maken. Op deze site verzamel ik wat ik bouw en leer.</p>
-          </div>
-          <div class="stack reveal" style="--d: 0.15s">
-            <h3>interesses &amp; stack</h3>
-            <div class="tags">
-              <span>Linux</span><span>Networking</span><span>Cloud</span><span>Docker</span>
-              <span>Python</span><span>Bash</span><span>Git</span><span>Web Security</span>
-              <span>CTF</span><span>HTML/CSS/JS</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <footer id="contact">
-    <div class="container footer-inner">
-      <p>Built by Wessel Smit · 2026 <span class="heart">_</span></p>
+    <footer class="manfoot">
+      <span>wesselsmit.com</span>
       <a href="https://status.wesselsmit.com/" class="status-link" id="status-link">
         <span class="status-dot" aria-hidden="true"></span><span id="status-text">status</span>
       </a>
-      <div class="socials">
-        <a href="https://github.com/WesselSmittt" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.1.79-.25.79-.56v-1.97c-3.2.7-3.87-1.54-3.87-1.54-.52-1.33-1.28-1.69-1.28-1.69-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.03 1.76 2.69 1.25 3.35.96.1-.74.4-1.25.73-1.54-2.55-.29-5.24-1.28-5.24-5.68 0-1.26.45-2.28 1.18-3.09-.12-.29-.51-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.77 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.18 1.83 1.18 3.09 0 4.41-2.69 5.38-5.26 5.67.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5Z"/></svg>
-        </a>
-        <a href="https://www.linkedin.com/in/wessel-smit-837397141/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28ZM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13ZM7.12 20.45H3.56V9h3.56v11.45ZM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0Z"/></svg>
-        </a>
-      </div>
-    </div>
-  </footer>
+      <span>2026 · WESSEL(1)</span>
+    </footer>
+  </div>
+
+  <div class="less" aria-hidden="true">
+    Manual page wessel(1) <span id="less-pos">line 1 (top)</span><span class="keys"> · <kbd>j</kbd>/<kbd>k</kbd> scroll · <kbd>g</kbd>/<kbd>G</kbd> begin/eind</span>
+  </div>
 
   <script>
     /* ---------- Live status in de footer ---------- */
@@ -883,180 +377,32 @@
   </script>
 
   <script>
+    /* ---------- less-balk: positie en j/k/g/G ---------- */
     (() => {
-      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      const finePointer = window.matchMedia("(pointer: fine)").matches;
+      const pos = document.getElementById("less-pos");
+      const lineH = 25;
 
-      /* ---------- Typewriter op de naam, daarna glitch ---------- */
-      const nameEl = document.getElementById("hero-name");
-      const fullName = nameEl.dataset.text;
+      const update = () => {
+        const max = document.documentElement.scrollHeight - innerHeight;
+        const y = scrollY;
+        const line = Math.floor(y / lineH) + 1;
+        pos.textContent = max <= 0 ? "(END)" :
+          y <= 0 ? "line 1 (top)" :
+          y >= max - 2 ? `line ${line} (END)` :
+          `line ${line} (${Math.round((y / max) * 100)}%)`;
+      };
 
-      if (reduceMotion) {
-        nameEl.textContent = fullName;
-      } else {
-        let i = 0;
-        const typeName = () => {
-          nameEl.textContent = fullName.slice(0, ++i);
-          if (i < fullName.length) {
-            setTimeout(typeName, 90 + Math.random() * 90);
-          } else {
-            nameEl.classList.add("glitching");
-          }
-        };
-        setTimeout(typeName, 400);
-      }
+      addEventListener("scroll", update, { passive: true });
+      addEventListener("resize", update);
+      update();
 
-      /* ---------- Roterende tagline ---------- */
-      const taglineEl = document.getElementById("tagline");
-      const taglines = [
-        "securing the cloud, one config at a time",
-        "breaking things to learn how to fix them",
-        "linux · networking · cloud · security",
-        "capture the flag enthusiast",
-        "always learning, always building",
-      ];
-
-      if (reduceMotion) {
-        taglineEl.textContent = taglines[0];
-      } else {
-        let t = 0, c = 0, deleting = false;
-        const tick = () => {
-          const current = taglines[t];
-          c += deleting ? -1 : 1;
-          taglineEl.textContent = current.slice(0, c);
-
-          let delay = deleting ? 28 : 55 + Math.random() * 45;
-          if (!deleting && c === current.length) {
-            deleting = true;
-            delay = 2200;
-          } else if (deleting && c === 0) {
-            deleting = false;
-            t = (t + 1) % taglines.length;
-            delay = 400;
-          }
-          setTimeout(tick, delay);
-        };
-        setTimeout(tick, 1800);
-      }
-
-      /* ---------- Scroll-reveal ---------- */
-      const revealEls = document.querySelectorAll(".reveal");
-      if ("IntersectionObserver" in window && !reduceMotion) {
-        const io = new IntersectionObserver((entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              entry.target.classList.add("visible");
-              io.unobserve(entry.target);
-            }
-          });
-        }, { threshold: 0.12, rootMargin: "0px 0px -40px 0px" });
-        revealEls.forEach((el) => io.observe(el));
-      } else {
-        revealEls.forEach((el) => el.classList.add("visible"));
-      }
-
-      /* ---------- Cursor glow + kaart-spotlight ---------- */
-      if (finePointer) {
-        const glow = document.querySelector(".cursor-glow");
-        let x = 0, y = 0, gx = 0, gy = 0, raf = null;
-
-        const follow = () => {
-          gx += (x - gx) * 0.18;
-          gy += (y - gy) * 0.18;
-          glow.style.transform = `translate3d(${gx}px, ${gy}px, 0) translate(-50%, -50%)`;
-          raf = Math.abs(x - gx) + Math.abs(y - gy) > 0.5 ? requestAnimationFrame(follow) : null;
-        };
-
-        window.addEventListener("pointermove", (e) => {
-          x = e.clientX;
-          y = e.clientY;
-          glow.classList.add("active");
-          if (!raf) raf = requestAnimationFrame(follow);
-        }, { passive: true });
-
-        document.addEventListener("pointerleave", () => glow.classList.remove("active"));
-
-        document.querySelectorAll(".card.active").forEach((card) => {
-          card.addEventListener("pointermove", (e) => {
-            const r = card.getBoundingClientRect();
-            card.style.setProperty("--mx", `${e.clientX - r.left}px`);
-            card.style.setProperty("--my", `${e.clientY - r.top}px`);
-          });
-        });
-      }
-
-      /* ---------- Achtergrond: zwevende hex- en binary-snippets ---------- */
-      const canvas = document.getElementById("bg-canvas");
-      const ctx = canvas.getContext("2d");
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
-      const tokens = ["0x1F", "0xFF", "0xA3", "0x7E", "0xDEAD", "0xBEEF", "0x00", "1010", "0110", "1101", "01", "10", "ssh", "sudo", "{ }", "</>", "#!", "::1", "443", "22"];
-      let w, h, particles = [];
-
-      const rand = (min, max) => Math.random() * (max - min) + min;
-
-      const makeParticle = (initial) => ({
-        x: rand(0, w),
-        y: initial ? rand(0, h) : h + 20,
-        vy: rand(0.12, 0.45),
-        vx: rand(-0.08, 0.08),
-        size: rand(10, 15),
-        alpha: rand(0.08, 0.35),
-        text: tokens[Math.floor(Math.random() * tokens.length)],
-        color: Math.random() > 0.5 ? "0, 255, 136" : "0, 212, 255",
+      addEventListener("keydown", (e) => {
+        if (e.ctrlKey || e.metaKey || e.altKey || /input|textarea/i.test(e.target.tagName)) return;
+        const step = { j: 3 * lineH, k: -3 * lineH }[e.key];
+        if (step) scrollBy({ top: step, behavior: "instant" });
+        else if (e.key === "g") scrollTo({ top: 0 });
+        else if (e.key === "G") scrollTo({ top: document.documentElement.scrollHeight });
       });
-
-      const resize = () => {
-        w = window.innerWidth;
-        h = window.innerHeight;
-        canvas.width = w * dpr;
-        canvas.height = h * dpr;
-        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-        const count = Math.round(Math.min(70, (w * h) / 22000));
-        particles = Array.from({ length: count }, () => makeParticle(true));
-      };
-
-      const draw = () => {
-        ctx.clearRect(0, 0, w, h);
-        for (const p of particles) {
-          ctx.font = `${p.size}px "JetBrains Mono", monospace`;
-          ctx.fillStyle = `rgba(${p.color}, ${p.alpha})`;
-          ctx.fillText(p.text, p.x, p.y);
-        }
-      };
-
-      let running = false;
-      const animate = () => {
-        if (document.hidden) { running = false; return; }
-        for (let i = 0; i < particles.length; i++) {
-          const p = particles[i];
-          p.y -= p.vy;
-          p.x += p.vx;
-          if (p.y < -20) particles[i] = makeParticle(false);
-        }
-        draw();
-        requestAnimationFrame(animate);
-      };
-      const start = () => {
-        if (running) return;
-        running = true;
-        requestAnimationFrame(animate);
-      };
-
-      resize();
-      let resizeTimer;
-      window.addEventListener("resize", () => {
-        clearTimeout(resizeTimer);
-        resizeTimer = setTimeout(() => { resize(); if (reduceMotion) draw(); }, 150);
-      });
-
-      if (reduceMotion) {
-        draw();
-      } else {
-        start();
-        document.addEventListener("visibilitychange", () => {
-          if (!document.hidden) start();
-        });
-      }
     })();
   </script>
 </body>
