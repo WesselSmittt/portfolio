@@ -5,39 +5,28 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Wessel Smit · Cybersecurity & Cloud</title>
   <meta name="description" content="Portfolio van Wessel Smit — HBO-ICT student Cybersecurity & Cloud aan Hogeschool Utrecht.">
-  <meta name="theme-color" content="#121110" media="(prefers-color-scheme: dark)">
-  <meta name="theme-color" content="#f3efe6" media="(prefers-color-scheme: light)">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23121110'/><text x='50' y='70' font-size='60' text-anchor='middle' fill='%23ffb000' font-family='monospace' font-weight='bold'>W</text></svg>">
+  <meta name="theme-color" content="#0b0c0e">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%230b0c0e'/><path d='M18 28h14l8 38 10-38h0l10 38 8-38h14L68 76H56L50 52 44 76H32Z' fill='%23ff5a1f'/></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #121110;
-      --text: #e9e4d8;
-      --muted: #8c867a;
-      --rule: #2e2b27;
-      --accent: #ffb000;
-      --on-accent: #121110;
-      --ok: #9ccf6a;
-      --warn: #ffb000;
-      --bad: #ff6a4d;
-      --font: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-      --indent: 7ch;
-    }
-
-    @media (prefers-color-scheme: light) {
-      :root {
-        --bg: #f3efe6;
-        --text: #1b1a17;
-        --muted: #6f695e;
-        --rule: #d9d2c3;
-        --accent: #b35900;
-        --on-accent: #f3efe6;
-        --ok: #3f7d1f;
-        --warn: #b35900;
-        --bad: #c2321b;
-      }
+      --bg: #0b0c0e;
+      --panel: #111316;
+      --panel-2: #16191d;
+      --line: #23272d;
+      --line-2: #33383f;
+      --text: #e7e9ec;
+      --muted: #7c838d;
+      --dim: #4a5059;
+      --accent: #ff5a1f;
+      --accent-soft: rgba(255, 90, 31, 0.12);
+      --ok: #3ddc97;
+      --warn: #ffb020;
+      --bad: #ff4d5e;
+      --display: "Archivo", system-ui, sans-serif;
+      --mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -45,364 +34,819 @@
     html { scroll-behavior: smooth; }
 
     body {
-      font-family: var(--font);
-      font-size: 15px;
+      font-family: var(--mono);
+      font-size: 14px;
       background: var(--bg);
       color: var(--text);
-      line-height: 1.65;
+      line-height: 1.6;
       min-height: 100vh;
-      padding-bottom: 2.5rem; /* ruimte voor de less-balk */
+      overflow-x: hidden;
       -webkit-font-smoothing: antialiased;
     }
 
     a { color: inherit; }
 
-    ::selection { background: var(--accent); color: var(--on-accent); }
+    ::selection { background: var(--accent); color: var(--bg); }
 
-    :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+    :focus-visible { outline: 1px solid var(--accent); outline-offset: 3px; }
 
-    .page {
-      max-width: 880px;
-      margin: 0 auto;
-      padding: 0 1rem;
-    }
+    .wrap { max-width: 1200px; margin: 0 auto; padding: 0 1rem; }
 
-    b, strong { font-weight: 700; }
-    .u { text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--muted); }
-    .muted { color: var(--muted); }
-    .acc { color: var(--accent); }
-
-    /* ---------- Man-page kop ---------- */
-    .manhead {
-      display: flex;
-      justify-content: space-between;
-      gap: 1rem;
-      padding: 1.25rem 0 0.9rem;
-      border-bottom: 1px solid var(--rule);
-      font-size: 0.8rem;
-    }
-
-    .manhead .mid { color: var(--muted); }
-
-    .manhead nav { display: flex; gap: 1.25rem; }
-
-    .manhead nav a {
-      text-decoration: none;
+    .label {
+      font-size: 0.7rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
       color: var(--muted);
     }
 
-    .manhead nav a:hover { color: var(--accent); }
+    .label .acc, .acc { color: var(--accent); }
 
-    @media (max-width: 620px) { .manhead .mid { display: none; } }
+    /* ---------- Blueprint-raster achter de hero ---------- */
+    .grid-bg {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(var(--line) 1px, transparent 1px),
+        linear-gradient(90deg, var(--line) 1px, transparent 1px);
+      background-size: 64px 64px;
+      background-position: -1px -1px;
+      opacity: 0.35;
+      mask-image: linear-gradient(to bottom, #000 40%, transparent);
+      -webkit-mask-image: linear-gradient(to bottom, #000 40%, transparent);
+    }
+
+    /* ---------- Navigatie ---------- */
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(11, 12, 14, 0.85);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: stretch;
+      justify-content: space-between;
+      height: 52px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.8rem;
+      letter-spacing: 0.08em;
+    }
+
+    .brand-mark {
+      width: 26px;
+      height: 26px;
+      display: grid;
+      place-items: center;
+      background: var(--accent);
+      color: var(--bg);
+      font-family: var(--display);
+      font-weight: 900;
+      font-stretch: 125%;
+      font-size: 0.85rem;
+    }
+
+    .nav-links { display: flex; list-style: none; }
+
+    .nav-links a {
+      display: flex;
+      align-items: center;
+      gap: 0.5ch;
+      height: 100%;
+      padding: 0 1.1rem;
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: var(--muted);
+      border-left: 1px solid var(--line);
+      transition: color 0.15s, background 0.15s;
+    }
+
+    .nav-links a span { color: var(--dim); }
+    .nav-links a:hover { color: var(--text); background: var(--panel); }
+    .nav-links a:hover span { color: var(--accent); }
+
+    @media (max-width: 560px) {
+      .brand .brand-text { display: none; }
+      .nav-links a { padding: 0 0.7rem; font-size: 0.68rem; }
+      .nav-links a span { display: none; }
+    }
+
+    /* ---------- Telemetrie-strip ---------- */
+    .hud {
+      border-bottom: 1px solid var(--line);
+      background: var(--panel);
+      font-size: 0.7rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .hud-inner {
+      display: flex;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .hud-inner::-webkit-scrollbar { display: none; }
+
+    .hud-item {
+      display: flex;
+      align-items: center;
+      gap: 0.7ch;
+      padding: 0.5rem 1rem;
+      border-right: 1px solid var(--line);
+      white-space: nowrap;
+    }
+
+    .hud-item:first-child { padding-left: 0; }
+    .hud-item b { color: var(--text); font-weight: 500; }
+
+    .led {
+      width: 7px;
+      height: 7px;
+      background: var(--dim);
+      flex: none;
+    }
+
+    .led.up { background: var(--ok); box-shadow: 0 0 6px var(--ok); }
+    .led.degraded { background: var(--warn); }
+    .led.down { background: var(--bad); }
 
     /* ---------- Hero ---------- */
-    .hero { padding: 4.5rem 0 3rem; }
+    .hero {
+      position: relative;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .hero-inner {
+      position: relative;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+      padding-top: 4.5rem;
+      padding-bottom: 4.5rem;
+    }
+
+    @media (min-width: 960px) {
+      .hero-inner { grid-template-columns: 1.15fr 1fr; align-items: center; min-height: min(calc(100vh - 90px), 820px); }
+    }
 
     .hero h1 {
-      font-size: clamp(3rem, 19vw, 7.5rem);
-      font-weight: 700;
-      line-height: 0.92;
-      letter-spacing: -0.055em;
-      margin-left: -0.05em;
+      margin-top: 1.25rem;
+      font-family: var(--display);
+      font-weight: 900;
+      font-stretch: 125%;
+      font-size: clamp(2.8rem, 10.5vw, 6.4rem);
+      line-height: 0.88;
+      letter-spacing: -0.02em;
+      text-transform: uppercase;
     }
 
-    .hero h1 .last { color: var(--accent); }
-
-    .hero h1 .cursor {
-      display: inline-block;
-      width: 0.5em;
-      height: 0.8em;
-      margin-left: 0.08em;
-      background: var(--text);
-      vertical-align: -0.02em;
-      animation: blink 1.1s steps(1) infinite;
+    .hero h1 .outline {
+      color: transparent;
+      -webkit-text-stroke: 1.5px var(--text);
     }
 
-    @keyframes blink { 50% { opacity: 0; } }
+    .hero h1 .dot { color: var(--accent); }
 
-    .hero .role {
+    .hero-lead {
       margin-top: 1.75rem;
-      max-width: 52ch;
-      font-size: 1.05rem;
-    }
-
-    .hero .role em { font-style: italic; color: var(--muted); }
-
-    /* ---------- Secties ---------- */
-    .sect { padding: 2.25rem 0; }
-
-    .sect > h2 {
+      max-width: 46ch;
       font-size: 0.95rem;
-      font-weight: 700;
-      letter-spacing: 0.04em;
+      color: var(--muted);
     }
 
-    .sect > h2 .n { color: var(--muted); font-weight: 400; margin-right: 1ch; }
+    .hero-lead b { color: var(--text); font-weight: 500; }
 
-    .body {
-      margin-top: 0.6rem;
-      padding-left: var(--indent);
-    }
-
-    .body p + p { margin-top: 0.9rem; }
-    .body p { max-width: 68ch; }
-
-    @media (max-width: 620px) { :root { --indent: 2ch; } }
-
-    .synopsis { white-space: pre-wrap; }
-    .synopsis .flag { color: var(--accent); }
-
-    /* ---------- Modules als optielijst ---------- */
-    .modules { list-style: none; border-top: 1px solid var(--rule); }
-
-    .modules li { border-bottom: 1px solid var(--rule); }
-
-    .mod {
-      display: grid;
-      grid-template-columns: 3ch 13ch 1fr auto;
-      gap: 0 1.5ch;
-      align-items: baseline;
-      padding: 0.9rem 0.6rem;
-      text-decoration: none;
-      transition: background 0.12s, color 0.12s;
-    }
-
-    .mod .idx { color: var(--muted); }
-    .mod .name { font-weight: 700; }
-    .mod .desc { color: var(--muted); }
-    .mod .go { white-space: nowrap; font-size: 0.8rem; }
-
-    a.mod:hover, a.mod:focus-visible {
-      background: var(--accent);
-      color: var(--on-accent);
-      outline: none;
-    }
-
-    a.mod:hover .idx, a.mod:hover .desc,
-    a.mod:focus-visible .idx, a.mod:focus-visible .desc { color: var(--on-accent); }
-
-    .mod.off { opacity: 0.55; }
-    .mod.off .name { text-decoration: line-through; text-decoration-thickness: 1px; }
-
-    @media (max-width: 620px) {
-      .mod { grid-template-columns: 3ch 1fr; row-gap: 0.2rem; }
-      .mod .desc, .mod .go { grid-column: 2; }
-    }
-
-    /* ---------- Zie ook ---------- */
-    .xref { display: flex; flex-wrap: wrap; gap: 0.35rem 0; }
-    .xref span:not(:last-child)::after { content: ","; margin-right: 1ch; color: var(--muted); }
-    .xref a { text-decoration: none; border-bottom: 1px solid var(--muted); }
-    .xref a:hover { color: var(--accent); border-color: var(--accent); }
-
-    /* ---------- Man-page voet ---------- */
-    .manfoot {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 0.75rem 1rem;
+    .specs {
       margin-top: 2rem;
-      padding: 0.9rem 0 1.5rem;
-      border-top: 1px solid var(--rule);
-      font-size: 0.8rem;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      border: 1px solid var(--line);
+      max-width: 520px;
     }
 
-    .status-link {
+    .specs div { padding: 0.75rem 0.9rem; }
+    .specs div + div { border-left: 1px solid var(--line); }
+    .specs dt { font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--dim); }
+    .specs dd { margin-top: 0.2rem; font-size: 0.82rem; }
+
+    .hero-cta { margin-top: 2rem; display: flex; flex-wrap: wrap; gap: 0.75rem; }
+
+    .btn {
       display: inline-flex;
       align-items: center;
-      gap: 0.6ch;
+      gap: 1.2ch;
+      padding: 0.8rem 1.2rem;
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      background: var(--accent);
+      color: var(--bg);
+      border: 1px solid var(--accent);
+      clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 0 100%);
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .btn:hover { background: var(--text); border-color: var(--text); }
+
+    .btn.ghost { background: transparent; color: var(--text); border-color: var(--line-2); }
+    .btn.ghost:hover { border-color: var(--accent); color: var(--accent); background: transparent; }
+
+    /* ---------- Topologie ---------- */
+    .topo {
+      position: relative;
+      border: 1px solid var(--line);
+      background: rgba(17, 19, 22, 0.8);
+    }
+
+    .topo-head {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.6rem 0.9rem;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .topo svg { display: block; width: 100%; height: auto; }
+
+    .topo .edge { stroke: var(--line-2); stroke-width: 1; fill: none; }
+    .topo .edge.flow { stroke: var(--accent); stroke-dasharray: 3 9; opacity: 0.55; animation: flow 1.4s linear infinite; }
+
+    @keyframes flow { to { stroke-dashoffset: -24; } }
+
+    .topo .node rect { fill: var(--panel-2); stroke: var(--line-2); }
+    .topo .node.core rect { stroke: var(--accent); }
+    .topo .node text { font-family: var(--mono); fill: var(--text); font-size: 11px; }
+    .topo .node .sub { fill: var(--muted); font-size: 9.5px; letter-spacing: 0.06em; }
+    .topo .node .led-s { fill: var(--dim); }
+    .topo .node.up .led-s { fill: var(--ok); }
+    .topo .node.degraded .led-s { fill: var(--warn); }
+    .topo .node.down .led-s { fill: var(--bad); }
+    .topo .packet { fill: var(--accent); }
+
+    .topo-foot {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.55rem 0.9rem;
+      border-top: 1px solid var(--line);
+    }
+
+    /* hoek-markeringen */
+    .ticks::before, .ticks::after {
+      content: "";
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      border: 0 solid var(--accent);
+      pointer-events: none;
+    }
+
+    .ticks::before { top: -1px; left: -1px; border-top-width: 2px; border-left-width: 2px; }
+    .ticks::after { bottom: -1px; right: -1px; border-bottom-width: 2px; border-right-width: 2px; }
+
+    /* ---------- Secties ---------- */
+    section.block { padding: 5.5rem 0; border-bottom: 1px solid var(--line); }
+
+    .sec-head {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+      margin-bottom: 2.5rem;
+    }
+
+    @media (min-width: 800px) {
+      .sec-head { grid-template-columns: 1fr 1fr; align-items: end; }
+    }
+
+    .sec-head h2 {
+      margin-top: 0.6rem;
+      font-family: var(--display);
+      font-weight: 800;
+      font-stretch: 125%;
+      font-size: clamp(1.9rem, 5vw, 3rem);
+      line-height: 0.95;
+      text-transform: uppercase;
+      letter-spacing: -0.01em;
+    }
+
+    .sec-head p { color: var(--muted); max-width: 48ch; }
+
+    /* ---------- Modules ---------- */
+    .modules {
+      display: grid;
+      grid-template-columns: 1fr;
+      border-top: 1px solid var(--line);
+      border-left: 1px solid var(--line);
+    }
+
+    @media (min-width: 720px) { .modules { grid-template-columns: repeat(2, 1fr); } }
+
+    .mod {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      padding: 1.5rem;
+      min-height: 280px;
+      text-decoration: none;
+      background: var(--panel);
+      border-right: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      overflow: hidden;
+      transition: background 0.2s;
+    }
+
+    .mod::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 2px;
+      width: 0;
+      background: var(--accent);
+      transition: width 0.35s ease;
+    }
+
+    a.mod:hover { background: var(--panel-2); }
+    a.mod:hover::after, a.mod:focus-visible::after { width: 100%; }
+
+    .mod-top { display: flex; justify-content: space-between; align-items: center; }
+
+    .state {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.8ch;
+      font-size: 0.68rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .mod h3 {
+      font-family: var(--display);
+      font-weight: 800;
+      font-stretch: 125%;
+      font-size: 1.7rem;
+      line-height: 1;
+      text-transform: uppercase;
+    }
+
+    .mod h3 .arrow {
+      display: inline-block;
+      color: var(--accent);
+      transition: transform 0.25s;
+    }
+
+    a.mod:hover h3 .arrow { transform: translate(4px, -4px); }
+
+    .mod p { color: var(--muted); max-width: 44ch; flex: 1; }
+
+    .mod-meta {
+      display: grid;
+      grid-template-columns: auto auto 1fr;
+      gap: 1.5rem;
+      align-items: end;
+      padding-top: 1rem;
+      border-top: 1px dashed var(--line-2);
+    }
+
+    .mod-meta dt { font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--dim); }
+    .mod-meta dd { font-size: 0.85rem; font-variant-numeric: tabular-nums; }
+
+    .spark { width: 100%; height: 30px; display: block; }
+    .spark path { fill: none; stroke: var(--accent); stroke-width: 1.25; vector-effect: non-scaling-stroke; }
+    .spark .area { fill: var(--accent-soft); stroke: none; }
+
+    .mod.off {
+      background:
+        repeating-linear-gradient(135deg, transparent 0 10px, rgba(255, 255, 255, 0.018) 10px 20px),
+        var(--panel);
+    }
+
+    .mod.off h3 { color: var(--dim); }
+
+    /* ---------- Over mij / neofetch ---------- */
+    .about {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+
+    @media (min-width: 900px) { .about { grid-template-columns: 1fr 1.2fr; } }
+
+    .about-text p { color: var(--muted); max-width: 52ch; font-size: 0.95rem; }
+    .about-text p + p { margin-top: 1rem; }
+    .about-text b { color: var(--text); font-weight: 500; }
+
+    .fetch {
+      position: relative;
+      border: 1px solid var(--line);
+      background: var(--panel);
+    }
+
+    .fetch-bar {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.55rem 0.9rem;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .fetch-body {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem 2rem;
+      padding: 1.4rem;
+      font-size: 0.82rem;
+    }
+
+    .fetch-art {
+      color: var(--accent);
+      line-height: 1;
+      font-size: 0.8rem;
+      white-space: pre;
+    }
+
+    .fetch-info { min-width: 0; flex: 1; }
+    .fetch-info .who { color: var(--accent); font-weight: 600; }
+    .fetch-info hr { border: 0; border-top: 1px solid var(--line-2); margin: 0.3rem 0 0.5rem; width: 11ch; }
+    .fetch-info p { overflow-wrap: anywhere; }
+    .fetch-info span { color: var(--accent); }
+
+    .swatches { display: flex; margin-top: 0.8rem; }
+    .swatches i { width: 1.6rem; height: 0.9rem; }
+
+    /* ---------- Footer ---------- */
+    footer { padding: 2rem 0 2.5rem; }
+
+    .foot {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .foot-links { display: flex; gap: 0; }
+
+    .foot-links a {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.7ch;
+      padding: 0.55rem 0.9rem;
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
       text-decoration: none;
       color: var(--muted);
-      --c: var(--muted);
+      border: 1px solid var(--line);
+      margin-left: -1px;
+      transition: color 0.15s, border-color 0.15s;
     }
 
-    .status-link.up { --c: var(--ok); }
-    .status-link.degraded { --c: var(--warn); }
-    .status-link.down { --c: var(--bad); }
-    .status-link:hover { color: var(--text); }
+    .foot-links a:hover { color: var(--accent); border-color: var(--accent); position: relative; }
+    .foot-links svg { width: 14px; height: 14px; fill: currentColor; }
 
-    .status-dot { width: 0.6em; height: 0.6em; background: var(--c); }
-
-    /* ---------- less-statusbalk ---------- */
-    .less {
-      position: fixed;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      z-index: 10;
-      background: var(--text);
-      color: var(--bg);
-      font-size: 0.8rem;
-      padding: 0.35rem 1rem;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .less kbd { font-family: inherit; font-weight: 700; }
-
-    @media (max-width: 620px) { .less .keys { display: none; } }
+    /* ---------- Reveal ---------- */
+    .reveal { opacity: 0; transform: translateY(16px); transition: opacity 0.6s ease, transform 0.6s ease; transition-delay: var(--d, 0s); }
+    .reveal.visible { opacity: 1; transform: none; }
 
     @media (prefers-reduced-motion: reduce) {
       html { scroll-behavior: auto; }
-      .hero h1 .cursor { animation: none; }
+      *, *::before, *::after { animation: none !important; transition: none !important; }
+      .reveal { opacity: 1; transform: none; }
     }
   </style>
 </head>
 <body>
-  <div class="page" id="top">
-    <header class="manhead">
-      <span>WESSEL(1)</span>
-      <span class="mid">Hogeschool Utrecht · HBO-ICT</span>
-      <nav aria-label="Hoofdnavigatie">
-        <a href="#modules">modules</a>
-        <a href="#about">about</a>
-        <a href="#contact">contact</a>
-      </nav>
-    </header>
-
-    <main>
-      <section class="hero">
-        <h1>Wessel<br><span class="last">Smit</span><span class="cursor" aria-hidden="true"></span></h1>
-        <p class="role">Student Cybersecurity &amp; Cloud. Ik bouw kleine tools, breek dingen om te snappen hoe ze werken, en zet ze daarna weer dicht. <em>Dit is mijn handleiding.</em></p>
-      </section>
-
-      <section class="sect">
-        <h2><span class="n">1</span>SYNOPSIS</h2>
-        <div class="body">
-          <p class="synopsis"><b>wessel</b> [<span class="flag">--learn</span>] [<span class="flag">--build</span>] [<span class="flag">--break</span>] <span class="u">systeem</span></p>
-        </div>
-      </section>
-
-      <section class="sect" id="modules">
-        <h2><span class="n">2</span>MODULES</h2>
-        <div class="body">
-          <p class="muted" style="margin-bottom: 1.1rem">Projecten, tools en leermateriaal. Er komt steeds meer bij.</p>
-          <ul class="modules">
-            <li>
-              <a class="mod" href="https://school.wesselsmit.com/">
-                <span class="idx">01</span><span class="name">school</span>
-                <span class="desc">Oefenmodules en quizzen voor HBO-ICT: theorie per sprint en meer.</span>
-                <span class="go">school.wesselsmit.com →</span>
-              </a>
-            </li>
-            <li>
-              <a class="mod" href="https://files.wesselsmit.com/">
-                <span class="idx">02</span><span class="name">filedrop</span>
-                <span class="desc">Bestanden direct en versleuteld van apparaat naar apparaat, zonder dat er iets op een server blijft staan.</span>
-                <span class="go">files.wesselsmit.com →</span>
-              </a>
-            </li>
-            <li>
-              <a class="mod" href="https://tools.wesselsmit.com/">
-                <span class="idx">03</span><span class="name">tools</span>
-                <span class="desc">JWT-decoder, encoder, hashes, subnetcalculator en meer. Draait volledig in je browser.</span>
-                <span class="go">tools.wesselsmit.com →</span>
-              </a>
-            </li>
-            <li>
-              <div class="mod off" aria-disabled="true">
-                <span class="idx">04</span><span class="name">ctf-writeups</span>
-                <span class="desc">Uitwerkingen van Capture The Flag challenges: web, crypto, forensics.</span>
-                <span class="go">binnenkort</span>
-              </div>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <section class="sect" id="about">
-        <h2><span class="n">3</span>DESCRIPTION</h2>
-        <div class="body">
-          <p><b>Wessel Smit</b> is HBO-ICT-student aan de Hogeschool Utrecht, richting <span class="acc">Cybersecurity &amp; Cloud</span>.</p>
-          <p>Vindt het leuk om te snappen hoe systemen werken, en hoe je ze kunt breken en weer veilig kunt maken. Op deze site verzamelt hij wat hij bouwt en leert.</p>
-        </div>
-      </section>
-
-      <section class="sect">
-        <h2><span class="n">4</span>ENVIRONMENT</h2>
-        <div class="body">
-          <p class="xref">
-            <span>linux(1)</span><span>networking(7)</span><span>cloud(7)</span><span>docker(1)</span><span>python(1)</span><span>bash(1)</span><span>git(1)</span><span>websec(7)</span><span>ctf(6)</span><span>html/css/js(5)</span>
-          </p>
-        </div>
-      </section>
-
-      <section class="sect" id="contact">
-        <h2><span class="n">5</span>SEE ALSO</h2>
-        <div class="body">
-          <p class="xref">
-            <span><a href="https://github.com/WesselSmittt" target="_blank" rel="noopener noreferrer">github(1)</a></span>
-            <span><a href="https://www.linkedin.com/in/wessel-smit-837397141/" target="_blank" rel="noopener noreferrer">linkedin(1)</a></span>
-            <span><a href="https://status.wesselsmit.com/">status(8)</a></span>
-          </p>
-        </div>
-      </section>
-    </main>
-
-    <footer class="manfoot">
-      <span>wesselsmit.com</span>
-      <a href="https://status.wesselsmit.com/" class="status-link" id="status-link">
-        <span class="status-dot" aria-hidden="true"></span><span id="status-text">status</span>
+  <header class="nav">
+    <div class="wrap nav-inner">
+      <a href="#top" class="brand" aria-label="Naar boven">
+        <span class="brand-mark" aria-hidden="true">W</span>
+        <span class="brand-text">WESSEL SMIT</span>
       </a>
-      <span>2026 · WESSEL(1)</span>
-    </footer>
+      <ul class="nav-links">
+        <li><a href="#modules"><span>01</span>Modules</a></li>
+        <li><a href="#about"><span>02</span>About</a></li>
+        <li><a href="#contact"><span>03</span>Contact</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <div class="hud" aria-label="Live telemetrie">
+    <div class="wrap hud-inner">
+      <div class="hud-item"><span class="led" id="hud-led"></span><b id="hud-state">verbinden…</b></div>
+      <div class="hud-item">nodes <b id="hud-nodes">–/–</b></div>
+      <div class="hud-item">avg latency <b id="hud-lat">– ms</b></div>
+      <div class="hud-item">last check <b id="hud-check">–</b></div>
+      <div class="hud-item">nl-utr <b id="hud-clock">--:--:--</b></div>
+    </div>
   </div>
 
-  <div class="less" aria-hidden="true">
-    Manual page wessel(1) <span id="less-pos">line 1 (top)</span><span class="keys"> · <kbd>j</kbd>/<kbd>k</kbd> scroll · <kbd>g</kbd>/<kbd>G</kbd> begin/eind</span>
-  </div>
+  <main id="top">
+    <section class="hero">
+      <div class="grid-bg" aria-hidden="true"></div>
+      <div class="wrap hero-inner">
+        <div>
+          <div class="label reveal"><span class="acc">■</span> Student · HBO-ICT · Hogeschool Utrecht</div>
+          <h1 class="reveal" style="--d: 0.05s">Wessel<br><span class="outline">Smit</span><span class="dot">.</span></h1>
+          <p class="hero-lead reveal" style="--d: 0.1s">Ik studeer <b>Cybersecurity &amp; Cloud</b>. Ik bouw eigen tools en infrastructuur, breek dingen om te snappen hoe ze werken, en zet ze daarna weer dicht.</p>
+
+          <dl class="specs reveal" style="--d: 0.15s">
+            <div><dt>Richting</dt><dd>Sec &amp; Cloud</dd></div>
+            <div><dt>Stack</dt><dd>Linux / CF</dd></div>
+            <div><dt>Modus</dt><dd class="acc">learn → fix</dd></div>
+          </dl>
+
+          <div class="hero-cta reveal" style="--d: 0.2s">
+            <a href="#modules" class="btn">Bekijk modules <span aria-hidden="true">↓</span></a>
+            <a href="#about" class="btn ghost">whoami</a>
+          </div>
+        </div>
+
+        <figure class="topo ticks reveal" style="--d: 0.25s" aria-label="Live netwerktopologie van wesselsmit.com">
+          <figcaption class="topo-head label"><span>Fig.01 — <span class="acc">topologie</span></span><span>live</span></figcaption>
+          <svg viewBox="0 0 480 360" role="img" aria-hidden="true">
+            <defs>
+              <pattern id="dots" width="16" height="16" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="0.8" fill="#23272d"/></pattern>
+            </defs>
+            <rect width="480" height="360" fill="url(#dots)"/>
+
+            <path id="e-school" class="edge" d="M240 180 H150 V75 H110"/>
+            <path id="e-files" class="edge" d="M240 180 H330 V75 H370"/>
+            <path id="e-tools" class="edge" d="M240 180 H150 V285 H110"/>
+            <path id="e-status" class="edge" d="M240 180 H330 V285 H370"/>
+            <use href="#e-school" class="edge flow"/>
+            <use href="#e-files" class="edge flow"/>
+            <use href="#e-tools" class="edge flow"/>
+            <use href="#e-status" class="edge flow"/>
+
+            <circle class="packet" r="2.5"><animateMotion dur="2.6s" repeatCount="indefinite"><mpath href="#e-school"/></animateMotion></circle>
+            <circle class="packet" r="2.5"><animateMotion dur="3.1s" begin="0.7s" repeatCount="indefinite"><mpath href="#e-files"/></animateMotion></circle>
+            <circle class="packet" r="2.5"><animateMotion dur="2.9s" begin="1.3s" repeatCount="indefinite"><mpath href="#e-tools"/></animateMotion></circle>
+            <circle class="packet" r="2.5"><animateMotion dur="3.4s" begin="0.3s" repeatCount="indefinite"><mpath href="#e-status"/></animateMotion></circle>
+
+            <g class="node core" id="n-portfolio" transform="translate(170 152)">
+              <rect width="140" height="56"/>
+              <circle class="led-s" cx="14" cy="16" r="3"/>
+              <text x="24" y="20">wesselsmit.com</text>
+              <text class="sub" x="14" y="40" id="l-portfolio">CORE · – ms</text>
+            </g>
+            <g class="node" id="n-school" transform="translate(10 50)">
+              <rect width="100" height="50"/>
+              <circle class="led-s" cx="12" cy="16" r="3"/>
+              <text x="22" y="20">school</text>
+              <text class="sub" x="12" y="38" id="l-school">– ms</text>
+            </g>
+            <g class="node" id="n-filedrop" transform="translate(370 50)">
+              <rect width="100" height="50"/>
+              <circle class="led-s" cx="12" cy="16" r="3"/>
+              <text x="22" y="20">files</text>
+              <text class="sub" x="12" y="38" id="l-filedrop">– ms</text>
+            </g>
+            <g class="node" id="n-tools" transform="translate(10 260)">
+              <rect width="100" height="50"/>
+              <circle class="led-s" cx="12" cy="16" r="3"/>
+              <text x="22" y="20">tools</text>
+              <text class="sub" x="12" y="38" id="l-tools">– ms</text>
+            </g>
+            <g class="node up" id="n-status" transform="translate(370 260)">
+              <rect width="100" height="50"/>
+              <circle class="led-s" cx="12" cy="16" r="3"/>
+              <text x="22" y="20">status</text>
+              <text class="sub" x="12" y="38">cron */5</text>
+            </g>
+          </svg>
+          <div class="topo-foot label"><span>edge: cloudflare</span><span id="topo-updated">–</span></div>
+        </figure>
+      </div>
+    </section>
+
+    <section class="block" id="modules">
+      <div class="wrap">
+        <div class="sec-head">
+          <div class="reveal">
+            <div class="label"><span class="acc">01</span> / Modules</div>
+            <h2>Wat ik<br>gebouwd heb</h2>
+          </div>
+          <p class="reveal" style="--d: 0.1s">Elk project draait als eigen service op een eigen subdomein. De cijfers hieronder komen live uit mijn statusmonitor.</p>
+        </div>
+
+        <div class="modules">
+          <a class="mod reveal" href="https://school.wesselsmit.com/" data-id="school">
+            <div class="mod-top"><span class="label">MOD-01</span><span class="state"><span class="led"></span><span class="state-t">–</span></span></div>
+            <h3>School <span class="arrow" aria-hidden="true">↗</span></h3>
+            <p>Oefenmodules en quizzen voor HBO-ICT: theorie per sprint en meer.</p>
+            <dl class="mod-meta">
+              <div><dt>Latency</dt><dd class="m-lat">–</dd></div>
+              <div><dt>Uptime vandaag</dt><dd class="m-up">–</dd></div>
+              <svg class="spark" viewBox="0 0 100 30" preserveAspectRatio="none" aria-hidden="true"></svg>
+            </dl>
+          </a>
+
+          <a class="mod reveal" style="--d: 0.08s" href="https://files.wesselsmit.com/" data-id="filedrop">
+            <div class="mod-top"><span class="label">MOD-02</span><span class="state"><span class="led"></span><span class="state-t">–</span></span></div>
+            <h3>Filedrop <span class="arrow" aria-hidden="true">↗</span></h3>
+            <p>Bestanden direct en versleuteld van apparaat naar apparaat, zonder dat er iets op een server blijft staan.</p>
+            <dl class="mod-meta">
+              <div><dt>Latency</dt><dd class="m-lat">–</dd></div>
+              <div><dt>Uptime vandaag</dt><dd class="m-up">–</dd></div>
+              <svg class="spark" viewBox="0 0 100 30" preserveAspectRatio="none" aria-hidden="true"></svg>
+            </dl>
+          </a>
+
+          <a class="mod reveal" style="--d: 0.16s" href="https://tools.wesselsmit.com/" data-id="tools">
+            <div class="mod-top"><span class="label">MOD-03</span><span class="state"><span class="led"></span><span class="state-t">–</span></span></div>
+            <h3>Tools <span class="arrow" aria-hidden="true">↗</span></h3>
+            <p>JWT-decoder, encoder, hashes, subnetcalculator en meer: security-tools die volledig in je browser draaien.</p>
+            <dl class="mod-meta">
+              <div><dt>Latency</dt><dd class="m-lat">–</dd></div>
+              <div><dt>Uptime vandaag</dt><dd class="m-up">–</dd></div>
+              <svg class="spark" viewBox="0 0 100 30" preserveAspectRatio="none" aria-hidden="true"></svg>
+            </dl>
+          </a>
+
+          <div class="mod off reveal" style="--d: 0.24s" aria-disabled="true">
+            <div class="mod-top"><span class="label">MOD-04</span><span class="state"><span class="led"></span>in ontwikkeling</span></div>
+            <h3>CTF Write-ups</h3>
+            <p>Uitwerkingen van Capture The Flag challenges: web, crypto, forensics en meer.</p>
+            <dl class="mod-meta">
+              <div><dt>Status</dt><dd>offline</dd></div>
+              <div><dt>ETA</dt><dd>binnenkort</dd></div>
+            </dl>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="block" id="about">
+      <div class="wrap">
+        <div class="sec-head">
+          <div class="reveal">
+            <div class="label"><span class="acc">02</span> / About</div>
+            <h2>Over mij</h2>
+          </div>
+        </div>
+
+        <div class="about">
+          <div class="about-text reveal">
+            <p>Hoi! Ik ben <b>Wessel Smit</b>, HBO-ICT-student aan de Hogeschool Utrecht met als richting <b>Cybersecurity &amp; Cloud</b>.</p>
+            <p>Ik vind het leuk om te snappen hoe systemen werken, en hoe je ze kunt breken en weer veilig kunt maken. Alles op deze site host ik zelf op Cloudflare: van de filedrop tot de statusmonitor die de cijfers hierboven levert.</p>
+          </div>
+
+          <div class="fetch ticks reveal" style="--d: 0.1s">
+            <div class="fetch-bar label"><span>~ $ neofetch</span><span>tty1</span></div>
+            <div class="fetch-body">
+<pre class="fetch-art" aria-hidden="true">██      ██
+██      ██
+██  ██  ██
+██  ██  ██
+██████████
+ ███  ███ </pre>
+              <div class="fetch-info">
+                <p class="who">wessel@smit</p>
+                <hr>
+                <p><span>OS</span>: HBO-ICT @ Hogeschool Utrecht</p>
+                <p><span>Kernel</span>: cybersecurity-cloud</p>
+                <p><span>Shell</span>: bash</p>
+                <p><span>Packages</span>: linux, networking, docker, python, git</p>
+                <p><span>Focus</span>: web security, cloud, CTF</p>
+                <p><span>Frontend</span>: html/css/js</p>
+                <p><span>Host</span>: cloudflare workers</p>
+                <div class="swatches" aria-hidden="true">
+                  <i style="background:#0b0c0e"></i><i style="background:#ff4d5e"></i><i style="background:#3ddc97"></i><i style="background:#ffb020"></i><i style="background:#ff5a1f"></i><i style="background:#7c838d"></i><i style="background:#e7e9ec"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer id="contact">
+    <div class="wrap foot">
+      <div class="label"><span class="acc">03</span> / © 2026 Wessel Smit</div>
+      <div class="foot-links">
+        <a href="https://github.com/WesselSmittt" target="_blank" rel="noopener noreferrer">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.1.79-.25.79-.56v-1.97c-3.2.7-3.87-1.54-3.87-1.54-.52-1.33-1.28-1.69-1.28-1.69-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.03 1.76 2.69 1.25 3.35.96.1-.74.4-1.25.73-1.54-2.55-.29-5.24-1.28-5.24-5.68 0-1.26.45-2.28 1.18-3.09-.12-.29-.51-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.77 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.18 1.83 1.18 3.09 0 4.41-2.69 5.38-5.26 5.67.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5Z"/></svg>GitHub
+        </a>
+        <a href="https://www.linkedin.com/in/wessel-smit-837397141/" target="_blank" rel="noopener noreferrer">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28ZM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13ZM7.12 20.45H3.56V9h3.56v11.45ZM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0Z"/></svg>LinkedIn
+        </a>
+        <a href="https://status.wesselsmit.com/" id="status-link"><span class="led" id="foot-led"></span>Status</a>
+      </div>
+    </div>
+  </footer>
 
   <script>
-    /* ---------- Live status in de footer ---------- */
-    (async () => {
-      try {
-        const res = await fetch("https://status.wesselsmit.com/api/status", { cache: "no-store" });
-        const data = await res.json();
-        const checks = data.monitors.map((m) => m.last).filter(Boolean);
-        if (!checks.length) return;
-        const down = checks.filter((c) => !c.ok).length;
-        const slow = checks.some((c) => c.ok && c.slow);
-        const state = down ? "down" : slow ? "degraded" : "up";
-        document.getElementById("status-link").classList.add(state);
-        document.getElementById("status-text").textContent =
-          state === "up" ? "alle systemen online" :
-          state === "degraded" ? "sommige systemen traag" :
-          down === 1 ? "1 systeem offline" : `${down} systemen offline`;
-      } catch {
-        /* status niet bereikbaar: link blijft neutraal "status" */
-      }
-    })();
-  </script>
-
-  <script>
-    /* ---------- less-balk: positie en j/k/g/G ---------- */
     (() => {
-      const pos = document.getElementById("less-pos");
-      const lineH = 25;
+      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-      const update = () => {
-        const max = document.documentElement.scrollHeight - innerHeight;
-        const y = scrollY;
-        const line = Math.floor(y / lineH) + 1;
-        pos.textContent = max <= 0 ? "(END)" :
-          y <= 0 ? "line 1 (top)" :
-          y >= max - 2 ? `line ${line} (END)` :
-          `line ${line} (${Math.round((y / max) * 100)}%)`;
+      /* ---------- Klok (Utrecht) ---------- */
+      const clock = document.getElementById("hud-clock");
+      const fmt = new Intl.DateTimeFormat("nl-NL", { timeZone: "Europe/Amsterdam", hour: "2-digit", minute: "2-digit", second: "2-digit" });
+      const tickClock = () => { clock.textContent = fmt.format(new Date()); };
+      tickClock();
+      setInterval(tickClock, 1000);
+
+      /* ---------- Scroll-reveal ---------- */
+      const revealEls = document.querySelectorAll(".reveal");
+      if ("IntersectionObserver" in window && !reduceMotion) {
+        const io = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("visible");
+              io.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.1 });
+        revealEls.forEach((el) => io.observe(el));
+      } else {
+        revealEls.forEach((el) => el.classList.add("visible"));
+      }
+
+      if (reduceMotion) document.querySelectorAll("animateMotion").forEach((a) => a.closest("circle").remove());
+
+      /* ---------- Live data uit de statusmonitor ---------- */
+      const stateOf = (last) => !last ? "" : !last.ok ? "down" : last.slow ? "degraded" : "up";
+      const stateLabel = { up: "online", degraded: "traag", down: "offline", "": "onbekend" };
+
+      const spark = (svg, recent) => {
+        const ms = recent.filter((r) => r.ok && r.ms != null).map((r) => r.ms);
+        if (ms.length < 2) return;
+        const max = Math.max(...ms) * 1.15;
+        const pts = ms.map((v, i) => [(i / (ms.length - 1)) * 100, 30 - (v / max) * 28]);
+        const line = pts.map(([x, y], i) => `${i ? "L" : "M"}${x.toFixed(1)} ${y.toFixed(1)}`).join(" ");
+        svg.innerHTML = `<path class="area" d="${line} L100 30 L0 30Z"/><path d="${line}"/>`;
       };
 
-      addEventListener("scroll", update, { passive: true });
-      addEventListener("resize", update);
-      update();
+      const load = async () => {
+        try {
+          const res = await fetch("https://status.wesselsmit.com/api/status", { cache: "no-store" });
+          const data = await res.json();
+          const mons = data.monitors;
+          const lasts = mons.map((m) => m.last).filter(Boolean);
+          if (!lasts.length) return;
 
-      addEventListener("keydown", (e) => {
-        if (e.ctrlKey || e.metaKey || e.altKey || /input|textarea/i.test(e.target.tagName)) return;
-        const step = { j: 3 * lineH, k: -3 * lineH }[e.key];
-        if (step) scrollBy({ top: step, behavior: "instant" });
-        else if (e.key === "g") scrollTo({ top: 0 });
-        else if (e.key === "G") scrollTo({ top: document.documentElement.scrollHeight });
-      });
+          const upCount = lasts.filter((l) => l.ok).length;
+          const down = lasts.length - upCount;
+          const overall = down ? "down" : lasts.some((l) => l.slow) ? "degraded" : "up";
+          const avg = Math.round(lasts.filter((l) => l.ok).reduce((s, l) => s + l.ms, 0) / Math.max(upCount, 1));
+          const checked = new Date(data.updated).toLocaleTimeString("nl-NL", { timeZone: "Europe/Amsterdam", hour: "2-digit", minute: "2-digit" });
+
+          for (const id of ["hud-led", "foot-led"]) document.getElementById(id).className = `led ${overall}`;
+          document.getElementById("hud-state").textContent =
+            overall === "up" ? "alle systemen online" : overall === "degraded" ? "sommige systemen traag" : `${down} offline`;
+          document.getElementById("hud-nodes").textContent = `${upCount}/${lasts.length}`;
+          document.getElementById("hud-lat").textContent = `${avg} ms`;
+          document.getElementById("hud-check").textContent = checked;
+          document.getElementById("topo-updated").textContent = `sync ${checked}`;
+
+          for (const m of mons) {
+            const st = stateOf(m.last);
+            const ms = m.last && m.last.ok ? `${m.last.ms} ms` : "–";
+
+            const node = document.getElementById(`n-${m.id}`);
+            if (node) node.classList.add(st);
+            const lbl = document.getElementById(`l-${m.id}`);
+            if (lbl) lbl.textContent = m.id === "portfolio" ? `CORE · ${ms}` : ms;
+
+            const card = document.querySelector(`.mod[data-id="${m.id}"]`);
+            if (!card) continue;
+            card.querySelector(".led").className = `led ${st}`;
+            card.querySelector(".state-t").textContent = stateLabel[st];
+            card.querySelector(".m-lat").textContent = ms;
+            const days = Object.keys(m.days || {}).sort();
+            const today = days.length ? m.days[days[days.length - 1]] : null;
+            if (today && today.total) {
+              const pct = (today.up / today.total) * 100;
+              card.querySelector(".m-up").textContent = `${pct % 1 ? pct.toFixed(1) : pct}%`;
+            }
+            spark(card.querySelector(".spark"), m.recent || []);
+          }
+        } catch {
+          document.getElementById("hud-state").textContent = "status onbereikbaar";
+        }
+      };
+
+      load();
+      setInterval(load, 60000);
     })();
   </script>
 </body>
