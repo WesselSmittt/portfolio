@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="nl">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Wessel Smit · Cybersecurity & Cloud</title>
-  <meta name="description" content="Portfolio van Wessel Smit — HBO-ICT student Cybersecurity & Cloud aan Hogeschool Utrecht.">
+  <meta name="description" content="Portfolio of Wessel Smit — HBO-ICT student in Cybersecurity & Cloud at Hogeschool Utrecht.">
   <meta name="theme-color" content="#0b0c0e">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%230b0c0e'/><path d='M18 28h14l8 38 10-38h0l10 38 8-38h14L68 76H56L50 52 44 76H32Z' fill='%23ff5a1f'/></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -143,6 +143,27 @@
       .nav-links a { padding: 0 0.7rem; font-size: 0.68rem; }
       .nav-links a span { display: none; }
     }
+
+    .lang-toggle {
+      display: flex;
+      align-items: center;
+      gap: 0.6ch;
+      height: 100%;
+      padding: 0 1.1rem;
+      font: inherit;
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      color: var(--dim);
+      background: none;
+      border: 0;
+      border-left: 1px solid var(--line);
+      cursor: pointer;
+    }
+
+    .lang-toggle span.on { color: var(--accent); }
+    .lang-toggle:hover { background: var(--panel); color: var(--muted); }
+
+    @media (max-width: 560px) { .lang-toggle { padding: 0 0.7rem; } }
 
     /* ---------- Telemetrie-strip ---------- */
     .hud {
@@ -323,6 +344,8 @@
       outline: none;
       caret-color: var(--accent);
     }
+
+    @media (max-width: 720px) { .shell { display: none; } }
 
     .sr-only {
       position: absolute;
@@ -562,7 +585,7 @@
 <body>
   <header class="nav">
     <div class="wrap nav-inner">
-      <a href="#top" class="brand" aria-label="Naar boven">
+      <a href="#top" class="brand" aria-label="Back to top" data-nl-aria-label="Naar boven">
         <span class="brand-mark" aria-hidden="true">W</span>
         <span class="brand-text">WESSEL SMIT</span>
       </a>
@@ -570,13 +593,14 @@
         <li><a href="#modules"><span>01</span>Modules</a></li>
         <li><a href="#about"><span>02</span>About</a></li>
         <li><a href="#contact"><span>03</span>Contact</a></li>
+        <li><button class="lang-toggle" type="button" data-lang-toggle><span data-lang="en">EN</span><span data-lang="nl">NL</span></button></li>
       </ul>
     </div>
   </header>
 
-  <div class="hud" aria-label="Live telemetrie">
+  <div class="hud" aria-label="Live telemetry" data-nl-aria-label="Live telemetrie">
     <div class="wrap hud-inner">
-      <div class="hud-item"><span class="led" id="hud-led"></span><b id="hud-state">verbinden…</b></div>
+      <div class="hud-item"><span class="led" id="hud-led"></span><b id="hud-state">connecting…</b></div>
       <div class="hud-item">nodes <b id="hud-nodes">–/–</b></div>
       <div class="hud-item">avg latency <b id="hud-lat">– ms</b></div>
       <div class="hud-item">last check <b id="hud-check">–</b></div>
@@ -591,27 +615,27 @@
         <div>
           <div class="label reveal"><span class="acc">■</span> Student · HBO-ICT · Hogeschool Utrecht</div>
           <h1 class="reveal" style="--d: 0.05s">Wessel<br><span class="outline">Smit</span><span class="dot">.</span></h1>
-          <p class="hero-lead reveal" style="--d: 0.1s">Ik studeer <b>Cybersecurity &amp; Cloud</b>. Ik bouw eigen tools en infrastructuur, breek dingen om te snappen hoe ze werken, en zet ze daarna weer dicht.</p>
+          <p class="hero-lead reveal" style="--d: 0.1s" data-nl-html="Ik studeer &lt;b&gt;Cybersecurity &amp;amp; Cloud&lt;/b&gt;. Ik bouw eigen tools en infrastructuur, breek dingen om te snappen hoe ze werken, en zet ze daarna weer dicht.">I study <b>Cybersecurity &amp; Cloud</b>. I build my own tools and infrastructure, break things to understand how they work, and then lock them down again.</p>
 
           <dl class="specs reveal" style="--d: 0.15s">
-            <div><dt>Richting</dt><dd>Sec &amp; Cloud</dd></div>
+            <div><dt data-nl="Richting">Track</dt><dd>Sec &amp; Cloud</dd></div>
             <div><dt>Stack</dt><dd>Linux / CF</dd></div>
-            <div><dt>Modus</dt><dd class="acc">learn → fix</dd></div>
+            <div><dt data-nl="Modus">Mode</dt><dd class="acc">learn → fix</dd></div>
           </dl>
 
           <div class="hero-cta reveal" style="--d: 0.2s">
-            <a href="#modules" class="btn">Bekijk modules <span aria-hidden="true">↓</span></a>
+            <a href="#modules" class="btn"><span data-nl="Bekijk modules">View modules</span> <span aria-hidden="true">↓</span></a>
             <a href="#about" class="btn ghost">whoami</a>
           </div>
         </div>
 
         <figure class="shell ticks reveal" style="--d: 0.25s">
           <figcaption class="shell-head label"><span>Fig.01 — <span class="acc">shell</span></span><span>wessel@smit</span></figcaption>
-          <div class="shell-body" id="shell" role="log" aria-label="Interactieve terminal">
+          <div class="shell-body" id="shell" role="log" aria-label="Interactive terminal" data-nl-aria-label="Interactieve terminal">
             <div id="shell-out"></div>
-            <label class="shell-input"><span class="p" aria-hidden="true">$</span><span class="sr-only">Commando</span><input id="shell-in" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="send"></label>
+            <label class="shell-input"><span class="p" aria-hidden="true">$</span><span class="sr-only" data-nl="Commando">Command</span><input id="shell-in" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="send"></label>
           </div>
-          <div class="shell-foot label"><span>typ <kbd>help</kbd></span><span>tab vult aan · ↑ geschiedenis</span></div>
+          <div class="shell-foot label"><span data-nl-html="typ &lt;kbd&gt;help&lt;/kbd&gt;">type <kbd>help</kbd></span><span data-nl="tab vult aan · ↑ geschiedenis">tab completes · ↑ history</span></div>
         </figure>
       </div>
     </section>
@@ -621,19 +645,19 @@
         <div class="sec-head">
           <div class="reveal">
             <div class="label"><span class="acc">01</span> / Modules</div>
-            <h2>Wat ik<br>gebouwd heb</h2>
+            <h2 data-nl-html="Wat ik&lt;br&gt;gebouwd heb">What I've<br>built</h2>
           </div>
-          <p class="reveal" style="--d: 0.1s">Elk project draait als eigen service op een eigen subdomein. De cijfers hieronder komen live uit mijn statusmonitor.</p>
+          <p class="reveal" style="--d: 0.1s" data-nl="Elk project draait als eigen service op een eigen subdomein. De cijfers hieronder komen live uit mijn statusmonitor.">Every project runs as its own service on its own subdomain. The numbers below come live from my status monitor.</p>
         </div>
 
         <div class="modules">
           <a class="mod reveal" href="https://school.wesselsmit.com/" data-id="school">
             <div class="mod-top"><span class="label">MOD-01</span><span class="state"><span class="led"></span><span class="state-t">–</span></span></div>
             <h3>School <span class="arrow" aria-hidden="true">↗</span></h3>
-            <p>Oefenmodules en quizzen voor HBO-ICT: theorie per sprint en meer.</p>
+            <p data-nl="Oefenmodules en quizzen voor HBO-ICT: theorie per sprint en meer.">Practice modules and quizzes for HBO-ICT: theory per sprint and more.</p>
             <dl class="mod-meta">
               <div><dt>Latency</dt><dd class="m-lat">–</dd></div>
-              <div><dt>Uptime vandaag</dt><dd class="m-up">–</dd></div>
+              <div><dt data-nl="Uptime vandaag">Uptime today</dt><dd class="m-up">–</dd></div>
               <svg class="spark" viewBox="0 0 100 30" preserveAspectRatio="none" aria-hidden="true"></svg>
             </dl>
           </a>
@@ -641,10 +665,10 @@
           <a class="mod reveal" style="--d: 0.08s" href="https://files.wesselsmit.com/" data-id="filedrop">
             <div class="mod-top"><span class="label">MOD-02</span><span class="state"><span class="led"></span><span class="state-t">–</span></span></div>
             <h3>Filedrop <span class="arrow" aria-hidden="true">↗</span></h3>
-            <p>Bestanden direct en versleuteld van apparaat naar apparaat, zonder dat er iets op een server blijft staan.</p>
+            <p data-nl="Bestanden direct en versleuteld van apparaat naar apparaat, zonder dat er iets op een server blijft staan.">Send files directly and encrypted from device to device, without anything staying on a server.</p>
             <dl class="mod-meta">
               <div><dt>Latency</dt><dd class="m-lat">–</dd></div>
-              <div><dt>Uptime vandaag</dt><dd class="m-up">–</dd></div>
+              <div><dt data-nl="Uptime vandaag">Uptime today</dt><dd class="m-up">–</dd></div>
               <svg class="spark" viewBox="0 0 100 30" preserveAspectRatio="none" aria-hidden="true"></svg>
             </dl>
           </a>
@@ -652,10 +676,10 @@
           <a class="mod reveal" style="--d: 0.16s" href="https://tools.wesselsmit.com/" data-id="tools">
             <div class="mod-top"><span class="label">MOD-03</span><span class="state"><span class="led"></span><span class="state-t">–</span></span></div>
             <h3>Tools <span class="arrow" aria-hidden="true">↗</span></h3>
-            <p>JWT-decoder, encoder, hashes, subnetcalculator en meer: security-tools die volledig in je browser draaien.</p>
+            <p data-nl="JWT-decoder, encoder, hashes, subnetcalculator en meer: security-tools die volledig in je browser draaien.">JWT decoder, encoder, hashes, subnet calculator and more: security tools that run entirely in your browser.</p>
             <dl class="mod-meta">
               <div><dt>Latency</dt><dd class="m-lat">–</dd></div>
-              <div><dt>Uptime vandaag</dt><dd class="m-up">–</dd></div>
+              <div><dt data-nl="Uptime vandaag">Uptime today</dt><dd class="m-up">–</dd></div>
               <svg class="spark" viewBox="0 0 100 30" preserveAspectRatio="none" aria-hidden="true"></svg>
             </dl>
           </a>
@@ -663,10 +687,10 @@
           <a class="mod reveal" style="--d: 0.24s" href="https://writeups.wesselsmit.com/" data-id="writeups">
             <div class="mod-top"><span class="label">MOD-04</span><span class="state"><span class="led"></span><span class="state-t">–</span></span></div>
             <h3>Write-ups <span class="arrow" aria-hidden="true">↗</span></h3>
-            <p>Verslagen van CTF-challenges, HackTheBox, homelab, cloud en school: hoe ik het aanpakte en wat ik ervan leerde.</p>
+            <p data-nl="Verslagen van CTF-challenges, HackTheBox, homelab, cloud en school: hoe ik het aanpakte en wat ik ervan leerde.">Notes on CTF challenges, HackTheBox, homelab, cloud and school: how I approached them and what I learned.</p>
             <dl class="mod-meta">
               <div><dt>Latency</dt><dd class="m-lat">–</dd></div>
-              <div><dt>Uptime vandaag</dt><dd class="m-up">–</dd></div>
+              <div><dt data-nl="Uptime vandaag">Uptime today</dt><dd class="m-up">–</dd></div>
               <svg class="spark" viewBox="0 0 100 30" preserveAspectRatio="none" aria-hidden="true"></svg>
             </dl>
           </a>
@@ -679,14 +703,14 @@
         <div class="sec-head">
           <div class="reveal">
             <div class="label"><span class="acc">02</span> / About</div>
-            <h2>Over mij</h2>
+            <h2 data-nl="Over mij">About me</h2>
           </div>
         </div>
 
         <div class="about">
           <div class="about-text reveal">
-            <p>Hoi! Ik ben <b>Wessel Smit</b>, HBO-ICT-student aan de Hogeschool Utrecht met als richting <b>Cybersecurity &amp; Cloud</b>.</p>
-            <p>Ik vind het leuk om te snappen hoe systemen werken, en hoe je ze kunt breken en weer veilig kunt maken. Alles op deze site host ik zelf op Cloudflare: van de filedrop tot de statusmonitor die de cijfers hierboven levert.</p>
+            <p data-nl-html="Hoi! Ik ben &lt;b&gt;Wessel Smit&lt;/b&gt;, HBO-ICT-student aan de Hogeschool Utrecht met als richting &lt;b&gt;Cybersecurity &amp;amp; Cloud&lt;/b&gt;.">Hi! I'm <b>Wessel Smit</b>, an HBO-ICT student at Hogeschool Utrecht, specialising in <b>Cybersecurity &amp; Cloud</b>.</p>
+            <p data-nl="Ik vind het leuk om te snappen hoe systemen werken, en hoe je ze kunt breken en weer veilig kunt maken. Alles op deze site host ik zelf op Cloudflare: van de filedrop tot de statusmonitor die de cijfers hierboven levert.">I like understanding how systems work, and how you can break them and make them secure again. I host everything on this site myself on Cloudflare: from the filedrop to the status monitor that feeds the numbers above.</p>
           </div>
 
           <div class="fetch ticks reveal" style="--d: 0.1s">
@@ -734,13 +758,14 @@
     </div>
   </footer>
 
+  <script src="i18n.js"></script>
   <script>
     (() => {
       const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
       /* ---------- Klok (Utrecht) ---------- */
       const clock = document.getElementById("hud-clock");
-      const fmt = new Intl.DateTimeFormat("nl-NL", { timeZone: "Europe/Amsterdam", hour: "2-digit", minute: "2-digit", second: "2-digit" });
+      const fmt = new Intl.DateTimeFormat(LOCALE(), { timeZone: "Europe/Amsterdam", hour: "2-digit", minute: "2-digit", second: "2-digit" });
       const tickClock = () => { clock.textContent = fmt.format(new Date()); };
       tickClock();
       setInterval(tickClock, 1000);
@@ -763,7 +788,7 @@
 
       /* ---------- Live data uit de statusmonitor ---------- */
       const stateOf = (last) => !last ? "" : !last.ok ? "down" : last.slow ? "degraded" : "up";
-      const stateLabel = { up: "online", degraded: "traag", down: "offline", "": "onbekend" };
+      const stateLabel = { up: "online", degraded: L("slow", "traag"), down: "offline", "": L("unknown", "onbekend") };
 
       const spark = (svg, recent) => {
         const ms = recent.filter((r) => r.ok && r.ms != null).map((r) => r.ms);
@@ -781,13 +806,13 @@
       const shellOut = document.getElementById("shell-out");
       const shellIn = document.getElementById("shell-in");
       const SERVICES = [
-        ["school", "https://school.wesselsmit.com/", "oefenmodules en quizzen"],
-        ["files", "https://files.wesselsmit.com/", "versleutelde filedrop"],
-        ["tools", "https://tools.wesselsmit.com/", "security-tools in je browser"],
+        ["school", "https://school.wesselsmit.com/", L("practice modules and quizzes", "oefenmodules en quizzen")],
+        ["files", "https://files.wesselsmit.com/", L("encrypted file drop", "versleutelde filedrop")],
+        ["tools", "https://tools.wesselsmit.com/", L("security tools in your browser", "security-tools in je browser")],
         ["writeups", "https://writeups.wesselsmit.com/", "ctf, htb, homelab, cloud"],
-        ["status", "https://status.wesselsmit.com/", "uptime-monitor"],
+        ["status", "https://status.wesselsmit.com/", L("uptime monitor", "uptime-monitor")],
         ["github", "https://github.com/WesselSmittt", "code"],
-        ["linkedin", "https://www.linkedin.com/in/wessel-smit-837397141/", "cv en contact"],
+        ["linkedin", "https://www.linkedin.com/in/wessel-smit-837397141/", L("cv and contact", "cv en contact")],
       ];
       const esc = (t) => String(t).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
       const print = (html, cls = "out") => {
@@ -801,37 +826,37 @@
 
       const COMMANDS = {
         help: () => print([
-          "<span class='hi'>whoami</span>          wie ben ik",
-          "<span class='hi'>ls</span>              alle sites en links",
-          "<span class='hi'>open</span> &lt;naam&gt;     open een site, bijv. <span class='hi'>open tools</span>",
-          "<span class='hi'>status</span>          live status van alle sites",
-          "<span class='hi'>cat about.txt</span>   over mij",
-          "<span class='hi'>date</span>            tijd in Utrecht",
-          "<span class='hi'>clear</span>           scherm leegmaken",
+          "<span class='hi'>whoami</span>          " + L("who am I", "wie ben ik"),
+          "<span class='hi'>ls</span>              " + L("all sites and links", "alle sites en links"),
+          "<span class='hi'>open</span> &lt;" + L("name", "naam") + "&gt;     " + L("open a site, e.g.", "open een site, bijv.") + " <span class='hi'>open tools</span>",
+          "<span class='hi'>status</span>          " + L("live status of all sites", "live status van alle sites"),
+          "<span class='hi'>cat about.txt</span>   " + L("about me", "over mij"),
+          "<span class='hi'>date</span>            " + L("time in Utrecht", "tijd in Utrecht"),
+          "<span class='hi'>clear</span>           " + L("clear the screen", "scherm leegmaken"),
         ].join("\n")),
-        whoami: () => print("<span class='hi'>wessel smit</span> — student hbo-ict, cybersecurity &amp; cloud @ hogeschool utrecht"),
+        whoami: () => print("<span class='hi'>wessel smit</span> — " + L("hbo-ict student, cybersecurity &amp; cloud @ hogeschool utrecht", "student hbo-ict, cybersecurity &amp; cloud @ hogeschool utrecht")),
         ls: () => print(SERVICES.map((s) => `${link(s)}${" ".repeat(Math.max(1, 10 - s[0].length))}<span class='out'>${s[2]}</span>`).join("\n"), "hi"),
         open: (arg) => {
           const s = SERVICES.find(([n]) => n === (arg || "").toLowerCase());
-          if (!s) return print(arg ? `open: onbekende site '${esc(arg)}' — typ <span class='hi'>ls</span>` : "gebruik: open &lt;naam&gt;, bijv. <span class='hi'>open tools</span>", arg ? "bad" : "out");
-          print(`openen: ${link(s)} …`);
+          if (!s) return print(arg ? L(`open: unknown site '${esc(arg)}' — type <span class='hi'>ls</span>`, `open: onbekende site '${esc(arg)}' — typ <span class='hi'>ls</span>`) : L("usage: open &lt;name&gt;, e.g. <span class='hi'>open tools</span>", "gebruik: open &lt;naam&gt;, bijv. <span class='hi'>open tools</span>"), arg ? "bad" : "out");
+          print(`${L("opening", "openen")}: ${link(s)} …`);
           setTimeout(() => (s[0] === "github" || s[0] === "linkedin" ? window.open(s[1], "_blank", "noopener") : (location.href = s[1])), 350);
         },
         status: () => {
-          if (!statusData) return print("status: nog geen data, probeer het zo nog eens", "warn");
+          if (!statusData) return print(L("status: no data yet, try again in a moment", "status: nog geen data, probeer het zo nog eens"), "warn");
           print(statusData.monitors.map((m) => {
             const l = m.last;
-            const [cls, txt] = !l ? ["out", "onbekend"] : !l.ok ? ["bad", "offline"] : l.slow ? ["warn", "traag"] : ["ok", "online"];
+            const [cls, txt] = !l ? ["out", L("unknown", "onbekend")] : !l.ok ? ["bad", "offline"] : l.slow ? ["warn", L("slow", "traag")] : ["ok", "online"];
             return `<span class='${cls}'>■</span> ${m.name.toLowerCase().padEnd(10)} ${(l && l.ok ? l.ms + " ms" : "–").padStart(7)}  <span class='${cls}'>${txt}</span>`;
           }).join("\n"), "hi");
         },
         cat: (arg) => arg === "about.txt"
-          ? print("Ik vind het leuk om te snappen hoe systemen werken, en hoe je ze kunt breken\nen weer veilig kunt maken. Alles op deze site host ik zelf op Cloudflare.")
-          : print(arg ? `cat: ${esc(arg)}: bestand niet gevonden` : "gebruik: cat about.txt", arg ? "bad" : "out"),
-        date: () => print(new Date().toLocaleString("nl-NL", { timeZone: "Europe/Amsterdam", dateStyle: "full", timeStyle: "medium" })),
+          ? print(L("I like understanding how systems work, and how you can break them\nand make them secure again. I host everything on this site myself on Cloudflare.", "Ik vind het leuk om te snappen hoe systemen werken, en hoe je ze kunt breken\nen weer veilig kunt maken. Alles op deze site host ik zelf op Cloudflare."))
+          : print(arg ? `cat: ${esc(arg)}: ${L("no such file", "bestand niet gevonden")}` : L("usage: cat about.txt", "gebruik: cat about.txt"), arg ? "bad" : "out"),
+        date: () => print(new Date().toLocaleString(LOCALE(), { timeZone: "Europe/Amsterdam", dateStyle: "full", timeStyle: "medium" })),
         clear: () => { shellOut.innerHTML = ""; },
         sudo: () => print("wessel is not in the sudoers file. This incident will be reported.", "bad"),
-        exit: () => print("logout… grapje, je kunt gewoon verder scrollen."),
+        exit: () => print(L("logout… just kidding, feel free to keep scrolling.", "logout… grapje, je kunt gewoon verder scrollen.")),
         echo: (arg, raw) => print(esc(raw.slice(5))),
       };
 
@@ -840,9 +865,9 @@
         if (echo) print(`<span class="p">$</span> <span class="hi">${esc(line)}</span>`, "");
         if (!line) return;
         const [cmd, ...rest] = line.split(/\s+/);
-        if (/^rm$/.test(cmd) && rest.join(" ").includes("-rf")) return print("netjes geprobeerd.", "warn");
+        if (/^rm$/.test(cmd) && rest.join(" ").includes("-rf")) return print(L("nice try.", "netjes geprobeerd."), "warn");
         const fn = COMMANDS[cmd.toLowerCase()];
-        fn ? fn(rest.join(" "), line) : print(`command not found: ${esc(cmd)} — typ <span class='hi'>help</span>`, "bad");
+        fn ? fn(rest.join(" "), line) : print(`command not found: ${esc(cmd)} — ${L("type", "typ")} <span class='hi'>help</span>`, "bad");
       };
 
       const history = [];
@@ -893,7 +918,7 @@
           await new Promise((r) => setTimeout(r, 250));
           run(cmd, false);
         }
-        print("typ <span class='hi'>help</span> voor meer commando's");
+        print(L("type <span class='hi'>help</span> for more commands", "typ <span class='hi'>help</span> voor meer commando's"));
       })();
 
 
@@ -910,11 +935,11 @@
           const down = lasts.length - upCount;
           const overall = down ? "down" : lasts.some((l) => l.slow) ? "degraded" : "up";
           const avg = Math.round(lasts.filter((l) => l.ok).reduce((s, l) => s + l.ms, 0) / Math.max(upCount, 1));
-          const checked = new Date(data.updated).toLocaleTimeString("nl-NL", { timeZone: "Europe/Amsterdam", hour: "2-digit", minute: "2-digit" });
+          const checked = new Date(data.updated).toLocaleTimeString(LOCALE(), { timeZone: "Europe/Amsterdam", hour: "2-digit", minute: "2-digit" });
 
           for (const id of ["hud-led", "foot-led"]) document.getElementById(id).className = `led ${overall}`;
           document.getElementById("hud-state").textContent =
-            overall === "up" ? "alle systemen online" : overall === "degraded" ? "sommige systemen traag" : `${down} offline`;
+            overall === "up" ? L("all systems online", "alle systemen online") : overall === "degraded" ? L("some systems slow", "sommige systemen traag") : `${down} offline`;
           document.getElementById("hud-nodes").textContent = `${upCount}/${lasts.length}`;
           document.getElementById("hud-lat").textContent = `${avg} ms`;
           document.getElementById("hud-check").textContent = checked;
@@ -937,7 +962,7 @@
             spark(card.querySelector(".spark"), m.recent || []);
           }
         } catch {
-          document.getElementById("hud-state").textContent = "status onbereikbaar";
+          document.getElementById("hud-state").textContent = L("status unreachable", "status onbereikbaar");
         }
       };
 
